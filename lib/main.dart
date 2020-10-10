@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'components.dart';
 
 void main() {
   runApp(App());
@@ -43,6 +44,16 @@ class _HomePageState extends State<HomePage> {
                 "img/logo_mint.png",
                 width: 160,
               ),
+              RestaurantCard(
+                id: 1,
+                name: "Pierożek",
+                city: "Mikołajki",
+              ),
+              RestaurantCard(
+                id: 2,
+                name: "Kuchnie Świata",
+                city: "Mikołajki",
+              )
             ],
           ),
         ),
