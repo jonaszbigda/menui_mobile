@@ -58,3 +58,51 @@ class RestaurantCard extends StatelessWidget {
     );
   }
 }
+
+class MenuiSearchBar extends StatefulWidget {
+  @override
+  MenuiSearchBarState createState() {
+    return MenuiSearchBarState();
+  }
+}
+
+class MenuiSearchBarState extends State<MenuiSearchBar> {
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: TextFormField(
+              style: TextStyle(color: Colors.orange),
+              decoration: InputDecoration(
+                  hintStyle: TextStyle(color: Colors.grey),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                      borderRadius: BorderRadius.circular(12)),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.orange, width: 2.0),
+                      borderRadius: BorderRadius.circular(12)),
+                  hintText: 'Wyszukaj miasto lub nazwę restauracji.',
+                  suffixIcon: Icon(
+                    Icons.search,
+                    color: Colors.orange,
+                  )),
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Wpisz coś w pole wyszukiwania.';
+                }
+                return null;
+              },
+              cursorColor: Colors.orange,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

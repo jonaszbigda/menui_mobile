@@ -12,6 +12,8 @@ class App extends StatelessWidget {
       title: 'Menui',
       theme: ThemeData(
         primarySwatch: Colors.orange,
+        primaryColor: Colors.orange,
+        accentColor: Colors.grey,
         backgroundColor: Colors.grey,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
@@ -44,16 +46,7 @@ class _HomePageState extends State<HomePage> {
                 "img/logo_mint.png",
                 width: 160,
               ),
-              RestaurantCard(
-                id: 1,
-                name: "Pierożek",
-                city: "Mikołajki",
-              ),
-              RestaurantCard(
-                id: 2,
-                name: "Kuchnie Świata",
-                city: "Mikołajki",
-              )
+              MenuiSearchBar()
             ],
           ),
         ),
