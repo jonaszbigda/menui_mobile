@@ -8,17 +8,24 @@ void main() {
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Menui',
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-        primaryColor: Colors.orange,
-        accentColor: Colors.grey,
-        backgroundColor: Colors.grey,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: HomePage(title: 'Menui - food guide'),
-    );
+    return GestureDetector(
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.focusedChild.unfocus();
+          }
+        },
+        child: MaterialApp(
+          title: 'Menui',
+          theme: ThemeData(
+            primarySwatch: Colors.orange,
+            primaryColor: Colors.orange,
+            accentColor: Colors.grey,
+            backgroundColor: Colors.grey,
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+          ),
+          home: HomePage(title: 'Menui - food guide'),
+        ));
   }
 }
 
