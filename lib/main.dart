@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'components.dart';
+import 'components/searchBar.dart';
 
 void main() {
   runApp(App());
