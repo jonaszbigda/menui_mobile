@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:menui_mobile/main.dart';
 import '../services.dart';
 
 class MenuiSearchBar extends StatefulWidget {
@@ -18,32 +19,50 @@ class MenuiSearchBarState extends State<MenuiSearchBar> {
   var suggestions = <String>[];
   bool suggestionsOpen = false;
 
-  Future<void> fetchAutocomplete(text) async {
-    final List<String> results = await services.fetchAutocomplete(text);
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(fetchAutocomplete);
+  }
 
-    setState(() {
-      suggestions = results;
-    });
+  Future<void> fetchAutocomplete() async {
+    if (_controller.text.isNotEmpty) {
+      final List<String> results =
+          await services.fetchAutocomplete(_controller.text);
 
-    if (!suggestionsOpen && results.isNotEmpty) {
       setState(() {
-        suggestionsOpen = true;
+        suggestions = results;
       });
-      _overlayEntry = _createOverlayEntry();
-      Overlay.of(context).insert(_overlayEntry);
+
+      if (!suggestionsOpen && results.isNotEmpty) {
+        setState(() {
+          suggestionsOpen = true;
+        });
+        _overlayEntry = _createOverlayEntry();
+        Overlay.of(context).insert(_overlayEntry);
+      } else if (results.isEmpty) {
+        hideSuggestions();
+      }
+      print(suggestions);
+    } else {
+      hideSuggestions();
     }
-    print(suggestions);
   }
 
   Future<void> searchRestaurantsByString() async {
     final List<Restaurant> results =
         await services.fetchSearchByString(_controller.text);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => SearchResults(restaurants: results)));
   }
 
   void hideSuggestions() {
     if (suggestionsOpen) {
       _overlayEntry.remove();
       setState(() {
+        suggestions = [];
         suggestionsOpen = false;
       });
     }
@@ -82,6 +101,7 @@ class MenuiSearchBarState extends State<MenuiSearchBar> {
                                   return ListTile(
                                     onTap: () {
                                       _controller.text = suggestions[index];
+                                      searchRestaurantsByString();
                                     },
                                     title: Text(
                                       suggestions[index],
@@ -115,7 +135,7 @@ class MenuiSearchBarState extends State<MenuiSearchBar> {
                 padding: const EdgeInsets.all(12),
                 child: TextFormField(
                   controller: _controller,
-                  onChanged: (text) => fetchAutocomplete(text),
+                  //onChanged: (text) => fetchAutocomplete(text),
                   style: TextStyle(color: Colors.orange),
                   decoration: InputDecoration(
                       hintStyle: TextStyle(color: Colors.grey),

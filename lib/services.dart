@@ -9,8 +9,11 @@ class MenuiServices {
     final response =
         await http.get('${backendURL}search/autocomplete?string=$text');
     if (response.statusCode == 200 || response.statusCode == 304) {
-      final List<String> cities = jsonDecode(response.body)['cities'];
-      final List<String> restaurants = jsonDecode(response.body)['restaurants'];
+      final List citiesDynamic = jsonDecode(response.body)['cities'];
+      final List restaurantsDynamic = jsonDecode(response.body)['restaurants'];
+      final List<String> cities = citiesDynamic.cast<String>().toList();
+      final List<String> restaurants =
+          restaurantsDynamic.cast<String>().toList();
       final List<String> result = [...cities, ...restaurants];
 
       return result;
@@ -39,17 +42,55 @@ class MenuiServices {
     final response = await http.get('${backendURL}search?string=$text');
     if (response.statusCode == 200 || response.statusCode == 304) {
       final List decoded = jsonDecode(response.body);
-      List<Restaurant> results;
+      List<Restaurant> results = [];
       for (var restaurant in decoded) {
+        final workingHours = restaurant['workingHours'];
+        final tags = restaurant['tags'];
+        final links = restaurant['links'];
+        final List responseLunchMenu = restaurant['lunchMenu'];
+        List<MenuiLunchMenuSet> lunchMenu = [];
+        if (responseLunchMenu != null) {
+          for (var lunchSet in responseLunchMenu) {
+            final MenuiLunchMenuSet thisSet = new MenuiLunchMenuSet(
+                lunchSet['lunchSetName'],
+                lunchSet['lunchSetPrice'],
+                lunchSet['lunchSetDishes']);
+            lunchMenu.add(thisSet);
+          }
+        }
         final result = new Restaurant(
             id: restaurant['_id'],
             name: restaurant['name'],
             city: restaurant['city'],
             adress: restaurant['adress'],
             coordinates: restaurant['coordinates'],
-            imgUrl: restaurant['imgUrl']);
+            imgUrl: restaurant['imgUrl'],
+            placesId: restaurant['placesId'],
+            workingHours: new MenuiWorkingHours(
+                workingHours['pn'],
+                workingHours['wt'],
+                workingHours['sr'],
+                workingHours['cz'],
+                workingHours['pt'],
+                workingHours['sb'],
+                workingHours['nd']),
+            description: restaurant['description'],
+            tags: new MenuiTags(
+                tags['cardPayments'],
+                tags['petFriendly'],
+                tags['glutenFree'],
+                tags['vegan'],
+                tags['vegetarian'],
+                tags['alcohol'],
+                tags['delivery']),
+            links: new MenuiLinks(
+                links['facebook'], links['instagram'], links['www']),
+            phone: restaurant['phone'],
+            categories: restaurant['categories'],
+            lunchHours: restaurant['lunchHours'],
+            lunchMenu: lunchMenu,
+            dishes: restaurant['dishes']);
         results.add(result);
-        print(result.name);
       }
       return results;
     } else {
@@ -75,7 +116,7 @@ class Restaurant {
   String phone;
   List categories;
   String lunchHours;
-  MenuiLunchMenu lunchMenu;
+  List<MenuiLunchMenuSet> lunchMenu;
   List dishes;
 
   Restaurant(
@@ -143,12 +184,12 @@ class MenuiAllergens {
       this.peanuts, this.sesame);
 }
 
-class MenuiLunchMenu {
+class MenuiLunchMenuSet {
   String lunchSetName;
   String lunchSetPrice;
   List lunchSetDishes;
 
-  MenuiLunchMenu(this.lunchSetName, this.lunchSetPrice, this.lunchSetDishes);
+  MenuiLunchMenuSet(this.lunchSetName, this.lunchSetPrice, this.lunchSetDishes);
 }
 
 class MenuiLinks {
