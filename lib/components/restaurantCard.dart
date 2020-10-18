@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'restaurantView.dart';
 import 'package:menui_mobile/services.dart';
 
 class RestaurantCard extends StatelessWidget {
@@ -10,7 +11,10 @@ class RestaurantCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
-        onTap: () {},
+        onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => RestaurantView(restaurant: restaurant))),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.baseline,
           children: <Widget>[

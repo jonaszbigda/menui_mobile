@@ -19,6 +19,7 @@ class App extends StatelessWidget {
         },
         child: MaterialApp(
           title: 'Menui',
+          themeMode: ThemeMode.dark,
           theme: ThemeData(
             platform: TargetPlatform.iOS,
             primarySwatch: Colors.orange,
