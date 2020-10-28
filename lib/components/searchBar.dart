@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:menui_mobile/main.dart';
 import '../services.dart';
+import 'searchResults.dart';
 
 class MenuiSearchBar extends StatefulWidget {
   @override
