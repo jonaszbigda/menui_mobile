@@ -1,62 +1,110 @@
 import 'package:flutter/material.dart';
 import 'restaurantView.dart';
 import 'package:menui_mobile/services.dart';
+import 'lineOfIconsSmall.dart';
 
 class RestaurantCard extends StatelessWidget {
   RestaurantCard({@required this.restaurant});
-
+  final _services = new MenuiServices();
   final Restaurant restaurant;
 
   @override
   Widget build(BuildContext context) {
+    String _openHours = _services.getTodayHours(restaurant.workingHours);
     return Card(
       child: InkWell(
         onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => RestaurantView(restaurant: restaurant))),
+                builder: (context) => RestaurantView(id: restaurant.id))),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.baseline,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Container(
               child: ClipRRect(
                 child: Image.network(
                   restaurant.imgUrl,
-                  width: 80,
-                  height: 80,
+                  width: 100,
+                  height: 100,
                   fit: BoxFit.cover,
                 ),
-                borderRadius: BorderRadius.all(Radius.circular(8)),
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(12),
+                    topLeft: Radius.circular(12)),
               ),
-              padding: EdgeInsets.all(8),
+              padding: EdgeInsets.only(right: 8),
             ),
             Expanded(
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Text(
                   restaurant.name,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      color: Colors.orange[600], fontSize: 16, height: 1.6),
+                  maxLines: 1,
+                  style: TextStyle(color: Colors.orange[600], fontSize: 16),
                 ),
                 Container(
                     child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      'Miasto: ${restaurant.city}',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: Colors.grey, fontSize: 14),
-                    ),
-                    Text(
-                      restaurant.description,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      style: TextStyle(color: Colors.grey, fontSize: 14),
-                    ),
+                    Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.location_city,
+                            size: 14,
+                            color: Colors.white,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 4),
+                            child: Text(
+                              '${restaurant.city}, ${restaurant.adress}',
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 12),
+                            ),
+                          ),
+                        ]),
+                    Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.restaurant,
+                            size: 14,
+                            color: Colors.white,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 4),
+                            child: Text(
+                              '${restaurant.type}',
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 12),
+                            ),
+                          ),
+                        ]),
+                    Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.timer,
+                            size: 14,
+                            color: Colors.white,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 4),
+                            child: Text(
+                              '$_openHours',
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 12),
+                            ),
+                          ),
+                        ]),
+                    Padding(
+                      child: LineOfIconsSmall(tags: restaurant.tags),
+                      padding: EdgeInsets.only(top: 4),
+                    )
                   ],
                 )),
               ],
@@ -64,7 +112,8 @@ class RestaurantCard extends StatelessWidget {
             Container(
               child: Icon(
                 Icons.arrow_right,
-                color: Colors.orange,
+                color: Colors.white,
+                size: 28,
               ),
             )
           ],

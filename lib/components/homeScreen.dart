@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Image.asset(
-                "img/logo_mint.png",
+                "img/logo_orange.png",
                 width: 160,
               ),
               MenuiSearchBar(),
@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(color: Colors.grey[400]),
                 ),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(50)),
               )
             ],
           ),

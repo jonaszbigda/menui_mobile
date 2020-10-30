@@ -23,7 +23,7 @@ class SearchResults extends StatelessWidget {
                 height: 30,
               ),
               Image.asset(
-                "img/logo_mint.png",
+                "img/logo_orange.png",
                 width: 60,
               ),
               MenuiSearchBar(),

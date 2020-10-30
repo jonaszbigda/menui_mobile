@@ -38,6 +38,62 @@ class MenuiServices {
     }
   }
 
+  Future<Restaurant> fetchRestaurant(String id) async {
+    final response = await http.get('${backendURL}restaurant?restaurantId=$id');
+    if (response.statusCode == 200 || response.statusCode == 304) {
+      final decoded = jsonDecode(response.body);
+      final workingHours = decoded['workingHours'];
+      final tags = decoded['tags'];
+      final links = decoded['links'];
+      final List responseLunchMenu = decoded['lunchMenu'];
+      List<MenuiLunchMenuSet> lunchMenu = [];
+      if (responseLunchMenu != null) {
+        for (var lunchSet in responseLunchMenu) {
+          final MenuiLunchMenuSet thisSet = new MenuiLunchMenuSet(
+              lunchSet['lunchSetName'],
+              lunchSet['lunchSetPrice'],
+              lunchSet['lunchSetDishes']);
+          lunchMenu.add(thisSet);
+        }
+      }
+      final result = new Restaurant(
+          id: decoded['_id'],
+          name: decoded['name'],
+          city: decoded['city'],
+          adress: decoded['adress'],
+          type: decoded['type'],
+          coordinates: decoded['coordinates'],
+          phone: decoded['phone'],
+          imgUrl: decoded['imgUrl'],
+          placesId: decoded['placesId'],
+          workingHours: new MenuiWorkingHours(
+              workingHours['pn'],
+              workingHours['wt'],
+              workingHours['sr'],
+              workingHours['cz'],
+              workingHours['pt'],
+              workingHours['sb'],
+              workingHours['nd']),
+          description: decoded['description'],
+          links: new MenuiLinks(
+              links['facebook'], links['instagram'], links['www']),
+          categories: decoded['categories'],
+          tags: new MenuiTags(
+              tags['cardPayments'],
+              tags['petFriendly'],
+              tags['glutenFree'],
+              tags['vegan'],
+              tags['vegetarian'],
+              tags['alcohol'],
+              tags['delivery']),
+          lunchHours: decoded['lunchHours'],
+          lunchMenu: lunchMenu,
+          dishes: decoded['dishes']);
+
+      return result;
+    }
+  }
+
   Future<List<Restaurant>> fetchSearchByString(String text) async {
     final response = await http.get('${backendURL}search?string=$text');
     if (response.statusCode == 200 || response.statusCode == 304) {
@@ -46,7 +102,6 @@ class MenuiServices {
       for (var restaurant in decoded) {
         final workingHours = restaurant['workingHours'];
         final tags = restaurant['tags'];
-        final links = restaurant['links'];
         final List responseLunchMenu = restaurant['lunchMenu'];
         List<MenuiLunchMenuSet> lunchMenu = [];
         if (responseLunchMenu != null) {
@@ -63,6 +118,7 @@ class MenuiServices {
             name: restaurant['name'],
             city: restaurant['city'],
             adress: restaurant['adress'],
+            type: restaurant['type'],
             coordinates: restaurant['coordinates'],
             imgUrl: restaurant['imgUrl'],
             placesId: restaurant['placesId'],
@@ -83,10 +139,6 @@ class MenuiServices {
                 tags['vegetarian'],
                 tags['alcohol'],
                 tags['delivery']),
-            links: new MenuiLinks(
-                links['facebook'], links['instagram'], links['www']),
-            phone: restaurant['phone'],
-            categories: restaurant['categories'],
             lunchHours: restaurant['lunchHours'],
             lunchMenu: lunchMenu,
             dishes: restaurant['dishes']);
@@ -95,6 +147,43 @@ class MenuiServices {
       return results;
     } else {
       return [];
+    }
+  }
+
+  String getTodayHours(MenuiWorkingHours workingHours) {
+    final DateTime now = DateTime.now();
+    String todayHours;
+    switch (now.weekday) {
+      case 1:
+        todayHours = formatTodayHours(workingHours.pn);
+        break;
+      case 2:
+        todayHours = formatTodayHours(workingHours.wt);
+        break;
+      case 3:
+        todayHours = formatTodayHours(workingHours.sr);
+        break;
+      case 4:
+        todayHours = formatTodayHours(workingHours.cz);
+        break;
+      case 5:
+        todayHours = formatTodayHours(workingHours.pt);
+        break;
+      case 6:
+        todayHours = formatTodayHours(workingHours.sb);
+        break;
+      case 7:
+        todayHours = formatTodayHours(workingHours.nd);
+        break;
+    }
+    return todayHours;
+  }
+
+  String formatTodayHours(String hours) {
+    if (hours == "") {
+      return 'nieczynne';
+    } else {
+      return hours;
     }
   }
 }
@@ -106,6 +195,7 @@ class Restaurant {
   String name;
   String city;
   String adress;
+  String type;
   List coordinates;
   String placesId;
   String imgUrl;
@@ -124,6 +214,7 @@ class Restaurant {
       @required this.name,
       @required this.city,
       @required this.adress,
+      @required this.type,
       @required this.coordinates,
       this.placesId,
       @required this.imgUrl,

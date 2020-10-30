@@ -83,13 +83,14 @@ class MenuiSearchBarState extends State<MenuiSearchBar> {
                 child: Stack(
                   children: [
                     Positioned(
-                      width: size.width,
+                      width: size.width * 0.94,
                       child: CompositedTransformFollower(
-                        offset: Offset(0.0, size.height + 5.0),
+                        offset: Offset(size.width * 0.03, size.height),
                         link: layerLink,
                         showWhenUnlinked: false,
                         child: Material(
-                          color: Colors.grey[800],
+                          color: Colors.grey[850],
+                          borderRadius: BorderRadius.circular(20),
                           elevation: 4.0,
                           child: ConstrainedBox(
                             constraints: new BoxConstraints(maxHeight: 200),
@@ -103,9 +104,13 @@ class MenuiSearchBarState extends State<MenuiSearchBar> {
                                       _controller.text = suggestions[index];
                                       searchRestaurantsByString();
                                     },
+                                    leading: Icon(
+                                      Icons.search_rounded,
+                                      color: Colors.grey,
+                                    ),
                                     title: Text(
                                       suggestions[index],
-                                      style: TextStyle(color: Colors.orange),
+                                      style: TextStyle(color: Colors.grey),
                                     ),
                                   );
                                 }),
@@ -135,18 +140,17 @@ class MenuiSearchBarState extends State<MenuiSearchBar> {
                 padding: const EdgeInsets.all(12),
                 child: TextFormField(
                   controller: _controller,
-                  //onChanged: (text) => fetchAutocomplete(text),
                   style: TextStyle(color: Colors.orange),
                   decoration: InputDecoration(
                       hintStyle: TextStyle(color: Colors.grey),
                       enabledBorder: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.grey, width: 1.0),
-                          borderRadius: BorderRadius.circular(12)),
+                          borderRadius: BorderRadius.circular(16)),
                       focusedBorder: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.orange, width: 2.0),
-                          borderRadius: BorderRadius.circular(12)),
+                          borderRadius: BorderRadius.circular(20)),
                       hintText: 'Wyszukaj miasto lub nazwę restauracji.',
                       suffixIcon: Icon(
                         Icons.search,
