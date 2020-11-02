@@ -38,6 +38,46 @@ class MenuiServices {
     }
   }
 
+  Future<List<Dish>> fetchAllDishes(String id) async {
+    final response =
+        await http.get('${backendURL}restaurant/dishes?restaurantId=$id');
+    if (response.statusCode != 400 &&
+        response.statusCode != 404 &&
+        response.statusCode != 500) {
+      final List decodedResponse = json.decode(response.body);
+      List<Dish> dishes = [];
+      if (decodedResponse.isNotEmpty && decodedResponse != null) {
+        for (var dish in decodedResponse) {
+          final thisAllergens = dish['allergens'];
+          final Dish thisDish = new Dish(
+              id: dish['_id'],
+              restaurantId: dish['restaurantId'],
+              name: dish['name'],
+              category: dish['category'],
+              price: dish['price'],
+              notes: dish['notes'],
+              imgUrl: dish['imgUrl'],
+              weight: dish['weight'],
+              ingredients: dish['ingredients'],
+              vegetarian: dish['vegetarian'],
+              vegan: dish['vegan'],
+              glicemicIndex: dish['glicemicIndex'],
+              kCal: dish['kCal'],
+              allergens: new MenuiAllergens(
+                  thisAllergens['gluten'],
+                  thisAllergens['lactose'],
+                  thisAllergens['soy'],
+                  thisAllergens['eggs'],
+                  thisAllergens['seaFood'],
+                  thisAllergens['peanuts'],
+                  thisAllergens['sesame']));
+          dishes.add(thisDish);
+        }
+      }
+      return dishes;
+    }
+  }
+
   Future<Restaurant> fetchRestaurant(String id) async {
     final response = await http.get('${backendURL}restaurant?restaurantId=$id');
     if (response.statusCode == 200 || response.statusCode == 304) {
@@ -45,6 +85,7 @@ class MenuiServices {
       final workingHours = decoded['workingHours'];
       final tags = decoded['tags'];
       final links = decoded['links'];
+      final List<String> categories = decoded['categories'].cast<String>();
       final List responseLunchMenu = decoded['lunchMenu'];
       List<MenuiLunchMenuSet> lunchMenu = [];
       if (responseLunchMenu != null) {
@@ -77,7 +118,7 @@ class MenuiServices {
           description: decoded['description'],
           links: new MenuiLinks(
               links['facebook'], links['instagram'], links['www']),
-          categories: decoded['categories'],
+          categories: categories,
           tags: new MenuiTags(
               tags['cardPayments'],
               tags['petFriendly'],
@@ -204,7 +245,7 @@ class Restaurant {
   MenuiTags tags;
   MenuiLinks links;
   String phone;
-  List categories;
+  List<String> categories;
   String lunchHours;
   List<MenuiLunchMenuSet> lunchMenu;
   List dishes;

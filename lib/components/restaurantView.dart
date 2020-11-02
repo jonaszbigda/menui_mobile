@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services.dart';
 import 'lineOfIcons.dart';
+import 'dishList.dart';
 
 class RestaurantView extends StatelessWidget {
   final String id;
@@ -10,6 +11,8 @@ class RestaurantView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    services.fetchAllDishes(id);
+    List<String> categories = [];
     return Scaffold(
         body: Container(
             decoration: BoxDecoration(color: Colors.grey[850]),
@@ -19,6 +22,7 @@ class RestaurantView extends StatelessWidget {
                   (BuildContext context, AsyncSnapshot<Restaurant> snapshot) {
                 if (snapshot.hasData) {
                   final Restaurant restaurant = snapshot.data;
+                  categories = restaurant.categories;
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -154,11 +158,11 @@ class RestaurantView extends StatelessWidget {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            showMenu(context);
+            showMenu(context, categories);
           },
           label: Text(
-            'Pokaż menu',
-            style: TextStyle(color: Colors.white),
+            'Menu',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
           ),
           icon: Icon(
             Icons.arrow_upward_rounded,
@@ -168,17 +172,19 @@ class RestaurantView extends StatelessWidget {
         ));
   }
 
-  showMenu(BuildContext context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("img/bg_tile.jpg"), fit: BoxFit.cover)),
-            child: Text('qweqweqweqweqweqw'),
-          );
-        });
+  showMenu(BuildContext context, List<String> categories) {
+    if (categories.isNotEmpty) {
+      showModalBottomSheet(
+          backgroundColor: Colors.grey[850],
+          isScrollControlled: true,
+          context: context,
+          builder: (BuildContext context) {
+            return DishList(
+              categories: categories,
+              id: id,
+            );
+          });
+    }
   }
 }
 
