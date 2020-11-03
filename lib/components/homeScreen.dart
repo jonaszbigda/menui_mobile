@@ -1,19 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'searchBar.dart';
+import '../settings.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
-
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  void getLocation() async {
-    Position currentLocation = await Geolocator.getCurrentPosition();
-    print(currentLocation);
-  }
+class HomePage extends StatelessWidget {
+  final MenuiSettings settings = new MenuiSettings();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +27,7 @@ class _HomePageState extends State<HomePage> {
               ),
               RaisedButton.icon(
                 color: Colors.grey[850],
-                onPressed: getLocation,
+                onPressed: () {},
                 icon: Icon(
                   Icons.my_location,
                   color: Colors.orange,
@@ -55,7 +45,7 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showSettings();
+          showSettings(context);
         },
         child: Icon(
           Icons.settings,
@@ -66,63 +56,318 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  showSettings() {
+  // SHOW SETTINGS
+
+  showSettings(BuildContext context) async {
+    FocusManager.instance.primaryFocus.unfocus();
+    final String languageCode = await settings.getLanguage();
+    final String language = settings.decodeLanguage(languageCode);
+    final int radius = await settings.getRadius();
+    final bool recommendationsValue = await settings.getRecommendations();
+    final recommendations = settings.decodeBool(recommendationsValue);
+
     showModalBottomSheet(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.grey[850],
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(24), topRight: Radius.circular(24))),
         context: context,
         builder: (BuildContext context) {
-          return ClipRRect(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-            child: Container(
-              height: 260,
-              decoration: BoxDecoration(color: Colors.grey[850]),
-              child: ListView(
-                children: <Widget>[
-                  ListTile(
-                      title: Text(
-                        'Język',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      leading: Icon(
-                        Icons.language,
-                        color: Colors.orange,
-                      ),
-                      onTap: () {}),
-                  ListTile(
-                      title: Text(
-                        'Promień lokalizacji',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      leading: Icon(
-                        Icons.location_searching_rounded,
-                        color: Colors.orange,
-                      ),
-                      onTap: () {}),
-                  ListTile(
-                      title: Text(
-                        'Proponuj restauracje',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      leading: Icon(
-                        Icons.restaurant,
-                        color: Colors.orange,
-                      ),
-                      onTap: () {}),
-                  ListTile(
-                      title: Text(
-                        'O aplikacji',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      leading: Icon(
-                        Icons.info,
-                        color: Colors.grey,
-                      ),
-                      onTap: () {}),
-                ],
-              ),
-            ),
+          return ListView(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            children: <Widget>[
+              ListTile(
+                  title: Text(
+                    'Język',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  subtitle: Text(
+                    language,
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  leading: Icon(
+                    Icons.language,
+                    color: Colors.orange,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    showLanguageSelectionDialog(context);
+                  }),
+              ListTile(
+                  title: Text(
+                    'Promień lokalizacji',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  subtitle:
+                      Text('${radius}m', style: TextStyle(color: Colors.grey)),
+                  leading: Icon(
+                    Icons.location_searching_rounded,
+                    color: Colors.orange,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    showRadiusSelectionDialog(context);
+                  }),
+              ListTile(
+                  title: Text(
+                    'Proponuj restauracje',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  subtitle: Text(recommendations,
+                      style: TextStyle(color: Colors.grey)),
+                  leading: Icon(
+                    Icons.notifications,
+                    color: Colors.orange,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    showRecommendationsDialog(context);
+                  }),
+              ListTile(
+                  title: Text(
+                    'O aplikacji',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  leading: Icon(
+                    Icons.info,
+                    color: Colors.grey,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    showAppInfoDialog(context);
+                  }),
+            ],
           );
         });
+  }
+
+  // SELECT LANGUAGE
+
+  void showLanguageSelectionDialog(BuildContext context) async {
+    final currentLanguage = await settings.getLanguage();
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            title: Text(
+              'Język',
+              style: TextStyle(color: Colors.white, fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+            backgroundColor: Colors.grey[850],
+            children: <Widget>[
+              SimpleDialogOption(
+                onPressed: () {
+                  settings.setLanguage('pl');
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'Polski',
+                  style:
+                      TextStyle(color: getOptionColor(currentLanguage, 'pl')),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SimpleDialogOption(
+                onPressed: () {
+                  settings.setLanguage('en');
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'English',
+                  style:
+                      TextStyle(color: getOptionColor(currentLanguage, 'en')),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SimpleDialogOption(
+                onPressed: () {
+                  settings.setLanguage('de');
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'Deutsch',
+                  style:
+                      TextStyle(color: getOptionColor(currentLanguage, 'de')),
+                  textAlign: TextAlign.center,
+                ),
+              )
+            ],
+          );
+        });
+  }
+
+  // SET SHOW RECOMMENDATIONS
+
+  void showRecommendationsDialog(BuildContext context) async {
+    final showRecommendations = await settings.getRecommendations();
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            title: Text(
+              'Polecaj restauracje w okolicy',
+              style: TextStyle(color: Colors.white, fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+            backgroundColor: Colors.grey[850],
+            children: <Widget>[
+              SimpleDialogOption(
+                onPressed: () {
+                  settings.setRecommendations(true);
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'Tak',
+                  style: TextStyle(
+                      color: getOptionColor(showRecommendations, true)),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SimpleDialogOption(
+                onPressed: () {
+                  settings.setRecommendations(false);
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'Nie',
+                  style: TextStyle(
+                      color: getOptionColor(showRecommendations, false)),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  // SHOW APP INFO
+
+  void showAppInfoDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24)),
+              backgroundColor: Colors.grey[850],
+              children: <Widget>[
+                ListTile(
+                    title: Text(
+                      'Wersja aplikacji',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    subtitle: Text(
+                      '0.0.1 (alpha)',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.grey),
+                    )),
+                ListTile(
+                    title: Text(
+                      'Wsparcie',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    subtitle: Text(
+                      'support@menui.pl',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.grey),
+                    )),
+                Text(
+                  'Menui Sp. z o.o. - wszelkie prawa zastrzeżone.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                )
+              ]);
+        });
+  }
+
+  // SELECT RADIUS
+
+  void showRadiusSelectionDialog(BuildContext context) async {
+    final int currentRadius = await settings.getRadius();
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return RadiusSlider(
+            initialValue: currentRadius.toDouble(),
+          );
+        });
+  }
+
+  Color getOptionColor(targetOption, thisOption) {
+    if (thisOption == targetOption) {
+      return Colors.orange;
+    } else {
+      return Colors.grey;
+    }
+  }
+}
+
+class RadiusSlider extends StatefulWidget {
+  final double initialValue;
+  RadiusSlider({Key key, @required this.initialValue}) : super(key: key);
+
+  @override
+  _RadiusSliderState createState() =>
+      _RadiusSliderState(sliderValue: initialValue);
+}
+
+class _RadiusSliderState extends State<RadiusSlider> {
+  double sliderValue;
+
+  _RadiusSliderState({this.sliderValue});
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleDialog(
+      title: Text(
+        'Promień lokalizacji',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+        textAlign: TextAlign.center,
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      backgroundColor: Colors.grey[850],
+      children: <Widget>[
+        Slider(
+            value: sliderValue,
+            min: 300,
+            max: 3000,
+            divisions: 9,
+            label: formatDistance(sliderValue),
+            onChanged: (double value) {
+              setState(() {
+                sliderValue = value;
+              });
+            }),
+        SimpleDialogOption(
+          onPressed: () async {
+            final MenuiSettings settings = new MenuiSettings();
+            settings.setRadius(sliderValue.toInt());
+            Navigator.pop(context);
+          },
+          child: const Text(
+            'Zapisz',
+            style: TextStyle(color: Colors.white),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ],
+    );
+  }
+
+  String formatDistance(double distance) {
+    if (distance > 1000) {
+      final double distanceInKM = distance / 1000;
+      return '${distanceInKM.toString()}km';
+    } else {
+      return '${distance}m';
+    }
   }
 }

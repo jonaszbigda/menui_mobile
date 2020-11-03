@@ -10,10 +10,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.focusedChild.unfocus();
-          }
+          FocusManager.instance.primaryFocus.unfocus();
         },
         child: MaterialApp(
           title: 'Menui - food guide',

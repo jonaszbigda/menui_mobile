@@ -15,6 +15,7 @@ class MenuiSearchBarState extends State<MenuiSearchBar> {
   final LayerLink layerLink = LayerLink();
   OverlayEntry _overlayEntry;
   final _controller = TextEditingController();
+  String previousText = '';
 
   var suggestions = <String>[];
   bool suggestionsOpen = false;
@@ -26,7 +27,8 @@ class MenuiSearchBarState extends State<MenuiSearchBar> {
   }
 
   Future<void> fetchAutocomplete() async {
-    if (_controller.text.isNotEmpty) {
+    if (_controller.text.isNotEmpty && _controller.text != previousText) {
+      previousText = _controller.text;
       final List<String> results =
           await services.fetchAutocomplete(_controller.text);
 
@@ -43,7 +45,6 @@ class MenuiSearchBarState extends State<MenuiSearchBar> {
       } else if (results.isEmpty) {
         hideSuggestions();
       }
-      print(suggestions);
     } else {
       hideSuggestions();
     }
@@ -76,6 +77,11 @@ class MenuiSearchBarState extends State<MenuiSearchBar> {
         builder: (context) => GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
+              FocusScopeNode currentFocus = FocusScope.of(context);
+              print('12345');
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
               hideSuggestions();
             },
             child: Align(

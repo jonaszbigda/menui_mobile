@@ -33,18 +33,29 @@ class DishCard extends StatelessWidget {
             ),
             Expanded(
                 child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(
-                  dish.name,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: TextStyle(color: Colors.orange[600], fontSize: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      dish.name,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(color: Colors.orange[600], fontSize: 15),
+                    ),
+                    Text(
+                      dish.weight,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                  ],
                 ),
                 Text(
                   '${dish.price} zł',
-                  style: TextStyle(color: Colors.grey[300], fontSize: 14),
+                  style: TextStyle(color: Colors.white, fontSize: 14),
                 ),
               ],
             )),
