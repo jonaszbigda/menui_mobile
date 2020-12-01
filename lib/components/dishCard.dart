@@ -53,10 +53,7 @@ class DishCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                Text(
-                  '${dish.price} zł',
-                  style: TextStyle(color: Colors.white, fontSize: 14),
-                ),
+                Prices(prices: dish.prices)
               ],
             )),
             Container(
@@ -69,6 +66,41 @@ class DishCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class Prices extends StatelessWidget {
+  final MenuiPrices prices;
+
+  Prices({@required this.prices});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[
+        if (prices.price1.priceName == "")
+          Text(
+            '${prices.price1.price} zł',
+            style: TextStyle(color: Colors.white, fontSize: 14),
+          ),
+        if (prices.price1.priceName != "")
+          Text(
+            '${prices.price1.priceName}: ${prices.price1.price} zł',
+            style: TextStyle(color: Colors.white, fontSize: 14),
+          ),
+        if (prices.price2.priceName != "")
+          Text(
+            '${prices.price2.priceName}: ${prices.price2.price} zł',
+            style: TextStyle(color: Colors.white, fontSize: 14),
+          ),
+        if (prices.price3.priceName != "")
+          Text(
+            '${prices.price3.priceName}: ${prices.price3.price} zł',
+            style: TextStyle(color: Colors.white, fontSize: 14),
+          ),
+      ],
     );
   }
 }

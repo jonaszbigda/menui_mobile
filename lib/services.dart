@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 
 class MenuiServices {
-  final String backendURL = 'https://menui.azurewebsites.net/';
+  final String backendURL = 'https://api.menui.pl/';
 
   Future<List<String>> fetchAutocomplete(String text) async {
     final response =
@@ -49,12 +49,22 @@ class MenuiServices {
       if (decodedResponse.isNotEmpty && decodedResponse != null) {
         for (var dish in decodedResponse) {
           final thisAllergens = dish['allergens'];
+          final thisPrices = dish['prices'];
+          final thisPrice1 = thisPrices['price1'];
+          final thisPrice2 = thisPrices['price2'];
+          final thisPrice3 = thisPrices['price3'];
           final Dish thisDish = new Dish(
               id: dish['_id'],
               restaurantId: dish['restaurantId'],
               name: dish['name'],
               category: dish['category'],
-              price: dish['price'],
+              prices: new MenuiPrices(
+                  price1: new MenuiPrice(
+                      thisPrice1['priceName'], thisPrice1['price']),
+                  price2: new MenuiPrice(
+                      thisPrice2['priceName'], thisPrice2['price']),
+                  price3: new MenuiPrice(
+                      thisPrice3['priceName'], thisPrice3['price'])),
               notes: dish['notes'],
               imgUrl: dish['imgUrl'],
               weight: dish['weight'],
@@ -275,7 +285,7 @@ class Dish {
   String restaurantId;
   String name;
   String category;
-  String price;
+  MenuiPrices prices;
   String notes;
   String imgUrl;
   String weight;
@@ -291,7 +301,7 @@ class Dish {
       @required this.restaurantId,
       @required this.name,
       @required this.category,
-      this.price,
+      this.prices,
       this.notes,
       this.imgUrl,
       this.weight,
@@ -301,6 +311,22 @@ class Dish {
       this.kCal,
       this.vegan,
       this.vegetarian});
+}
+
+class MenuiPrices {
+  MenuiPrice price1;
+  MenuiPrice price2;
+  MenuiPrice price3;
+
+  MenuiPrices(
+      {@required this.price1, @required this.price2, @required this.price3});
+}
+
+class MenuiPrice {
+  String priceName;
+  String price;
+
+  MenuiPrice(this.priceName, this.price);
 }
 
 class MenuiAllergens {
