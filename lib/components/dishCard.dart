@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services.dart';
+import 'dishView.dart';
 
 class DishCard extends StatelessWidget {
   final Dish dish;
@@ -13,7 +14,8 @@ class DishCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       margin: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
       child: InkWell(
-        onTap: () {},
+        onTap: () => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => DishView(dish: dish))),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services.dart';
 import 'lineOfIcons.dart';
 import 'dishList.dart';
+import 'socialMedia.dart';
 
 class RestaurantView extends StatelessWidget {
   final String id;
@@ -119,6 +120,10 @@ class RestaurantView extends StatelessWidget {
                               height: 12,
                             ),
                             MenuiDoubleColorText(
+                              leading: 'Kuchnia: ',
+                              following: '${restaurant.type}',
+                            ),
+                            MenuiDoubleColorText(
                               leading: 'Adres: ',
                               following:
                                   '${restaurant.city}, ${restaurant.adress}',
@@ -140,6 +145,18 @@ class RestaurantView extends StatelessWidget {
                             ),
                             WorkingHoursList(
                                 workingHours: restaurant.workingHours),
+                            SizedBox(
+                              height: 12,
+                            ),
+                            Text(
+                              'Social media',
+                              style:
+                                  TextStyle(color: Colors.orange, fontSize: 14),
+                            ),
+                            SizedBox(
+                              height: 12,
+                            ),
+                            SocialMedia(links: restaurant.links),
                             SizedBox(
                               height: 12,
                             ),
