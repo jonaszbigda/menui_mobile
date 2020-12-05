@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
+import './settings.dart';
 
 class MenuiServices {
   final String backendURL = 'https://api.menui.pl/';
+  final MenuiSettings settings = new MenuiSettings();
 
   Future<List<String>> fetchAutocomplete(String text) async {
     final response =
@@ -113,7 +115,7 @@ class MenuiServices {
           city: decoded['city'],
           adress: decoded['adress'],
           type: decoded['type'],
-          coordinates: decoded['coordinates'],
+          coordinates: decoded['location']['coordinates'],
           phone: decoded['phone'],
           imgUrl: decoded['imgUrl'],
           placesId: decoded['placesId'],
@@ -140,8 +142,66 @@ class MenuiServices {
           lunchHours: decoded['lunchHours'],
           lunchMenu: lunchMenu,
           dishes: decoded['dishes']);
-
       return result;
+    }
+  }
+
+  Future<List<Restaurant>> fetchRestaurantsByLocation(
+      double lat, double lng) async {
+    final radius = await settings.getRadius();
+    final response = await http
+        .get('${backendURL}search/location?lon=$lng&lat=$lat&radius=$radius');
+    if (response.statusCode == 200 || response.statusCode == 304) {
+      final List decoded = jsonDecode(response.body);
+      List<Restaurant> results = [];
+      for (var restaurant in decoded) {
+        final workingHours = restaurant['workingHours'];
+        final tags = restaurant['tags'];
+        final List responseLunchMenu = restaurant['lunchMenu'];
+        List<MenuiLunchMenuSet> lunchMenu = [];
+        if (responseLunchMenu != null) {
+          for (var lunchSet in responseLunchMenu) {
+            final MenuiLunchMenuSet thisSet = new MenuiLunchMenuSet(
+                lunchSet['lunchSetName'],
+                lunchSet['lunchSetPrice'],
+                lunchSet['lunchSetDishes']);
+            lunchMenu.add(thisSet);
+          }
+        }
+        final result = new Restaurant(
+            id: restaurant['_id'],
+            name: restaurant['name'],
+            city: restaurant['city'],
+            adress: restaurant['adress'],
+            type: restaurant['type'],
+            coordinates: restaurant['location']['coordinates'],
+            imgUrl: restaurant['imgUrl'],
+            placesId: restaurant['placesId'],
+            workingHours: new MenuiWorkingHours(
+                workingHours['pn'],
+                workingHours['wt'],
+                workingHours['sr'],
+                workingHours['cz'],
+                workingHours['pt'],
+                workingHours['sb'],
+                workingHours['nd']),
+            description: restaurant['description'],
+            tags: new MenuiTags(
+                tags['cardPayments'],
+                tags['petFriendly'],
+                tags['glutenFree'],
+                tags['vegan'],
+                tags['vegetarian'],
+                tags['alcohol'],
+                tags['delivery']),
+            lunchHours: restaurant['lunchHours'],
+            lunchMenu: lunchMenu,
+            dishes: restaurant['dishes']);
+        results.add(result);
+      }
+      return results;
+    } else {
+      return [];
     }
   }
 
@@ -311,6 +371,15 @@ class Dish {
       this.kCal,
       this.vegan,
       this.vegetarian});
+}
+
+class MenuiMarker {
+  final List coordinates;
+  final String title;
+  final String type;
+
+  MenuiMarker(
+      {@required this.coordinates, @required this.title, @required this.type});
 }
 
 class MenuiPrices {

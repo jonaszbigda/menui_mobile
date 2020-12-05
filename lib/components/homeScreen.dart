@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'searchBar.dart';
 import '../settings.dart';
+import 'mapView.dart';
 
 class HomePage extends StatelessWidget {
   final MenuiSettings settings = new MenuiSettings();
@@ -27,7 +28,8 @@ class HomePage extends StatelessWidget {
               ),
               RaisedButton.icon(
                 color: Colors.grey[850],
-                onPressed: () {},
+                onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MapView())),
                 icon: Icon(
                   Icons.my_location,
                   color: Colors.orange,

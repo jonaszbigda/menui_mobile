@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:menui_mobile/services.dart';
 import 'lineOfAllergens.dart';
+import 'iconChip.dart';
 
 class DishView extends StatelessWidget {
   final Dish dish;
@@ -22,6 +23,7 @@ class DishView extends StatelessWidget {
                     fit: BoxFit.cover),
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SizedBox(
                     height: 160,
@@ -32,14 +34,21 @@ class DishView extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: Colors.grey[850],
                         borderRadius: BorderRadius.all(Radius.circular(8))),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
+                        Icon(
+                          Icons.restaurant,
+                          color: Colors.orange,
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
                         Text(
                           dish.name,
                           style: TextStyle(
                               fontSize: 24,
-                              color: Colors.orange,
+                              color: Colors.white,
                               fontWeight: FontWeight.w300),
                         ),
                       ],
@@ -50,25 +59,28 @@ class DishView extends StatelessWidget {
               ),
             ),
             SizedBox(height: 8),
+            Text(
+              'Może zawierać',
+              style: TextStyle(color: Colors.orange, fontSize: 14),
+            ),
             Allergens(allergens: dish.allergens),
             Divider(
               height: 14,
               thickness: 4,
             ),
-            Text(
-              'Cena',
-              style: TextStyle(color: Colors.orange, fontSize: 14),
-            ),
             SizedBox(
-              height: 12,
+              height: 8,
             ),
             Prices(prices: dish.prices),
             SizedBox(
-              height: 12,
+              height: 8,
             ),
             Divider(
               height: 14,
               thickness: 4,
+            ),
+            SizedBox(
+              height: 6,
             ),
             Text(
               'Składniki',
@@ -82,46 +94,27 @@ class DishView extends StatelessWidget {
               style: TextStyle(color: Colors.grey[200], fontSize: 12),
             ),
             SizedBox(
-              height: 12,
+              height: 6,
             ),
-            Text(
-              'Porcja',
-              style: TextStyle(color: Colors.orange, fontSize: 14),
-            ),
-            SizedBox(
-              height: 12,
-            ),
-            Text(
-              '${dish.weight}',
-              style: TextStyle(color: Colors.grey[200], fontSize: 12),
+            Divider(
+              height: 14,
+              thickness: 4,
             ),
             SizedBox(
-              height: 12,
+              height: 6,
             ),
-            Text(
-              'Wartość energetyczna',
-              style: TextStyle(color: Colors.orange, fontSize: 14),
-            ),
-            SizedBox(
-              height: 12,
-            ),
-            Text(
-              '${dish.kCal}',
-              style: TextStyle(color: Colors.grey[200], fontSize: 12),
-            ),
-            SizedBox(
-              height: 12,
-            ),
-            Text(
-              'Indeks glikemiczny',
-              style: TextStyle(color: Colors.orange, fontSize: 14),
-            ),
-            SizedBox(
-              height: 12,
-            ),
-            Text(
-              '${dish.glicemicIndex}',
-              style: TextStyle(color: Colors.grey[200], fontSize: 12),
+            Wrap(
+              spacing: 10,
+              children: <Widget>[
+                IconChip(
+                    icon: Icons.battery_charging_full,
+                    leading: "Wartość energetyczna",
+                    value: dish.kCal),
+                IconChip(
+                    icon: Icons.cake,
+                    leading: "Indeks glikemiczny",
+                    value: dish.glicemicIndex),
+              ],
             ),
             SizedBox(
               height: 12,
@@ -133,10 +126,26 @@ class DishView extends StatelessWidget {
             SizedBox(
               height: 12,
             ),
-            Text(
-              '${dish.notes}',
-              style: TextStyle(color: Colors.grey[200], fontSize: 12),
-            ),
+            if (dish.notes == "")
+              Text(
+                '---',
+                style: TextStyle(color: Colors.grey[200], fontSize: 12),
+              ),
+            if (dish.notes != "")
+              Text(
+                '${dish.notes}',
+                style: TextStyle(color: Colors.grey[200], fontSize: 12),
+              ),
+            if (dish.vegan)
+              Text(
+                'Danie wegańskie',
+                style: TextStyle(color: Colors.grey[200], fontSize: 12),
+              ),
+            if (dish.vegetarian)
+              Text(
+                'Danie wegetariańskie',
+                style: TextStyle(color: Colors.grey[200], fontSize: 12),
+              ),
           ],
         ),
       ),

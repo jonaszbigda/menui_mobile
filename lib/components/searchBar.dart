@@ -78,7 +78,6 @@ class MenuiSearchBarState extends State<MenuiSearchBar> {
             behavior: HitTestBehavior.translucent,
             onTap: () {
               FocusScopeNode currentFocus = FocusScope.of(context);
-              print('12345');
               if (!currentFocus.hasPrimaryFocus) {
                 currentFocus.unfocus();
               }

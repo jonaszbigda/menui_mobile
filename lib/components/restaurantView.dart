@@ -3,6 +3,7 @@ import '../services.dart';
 import 'lineOfIcons.dart';
 import 'dishList.dart';
 import 'socialMedia.dart';
+import 'restaurantMapView.dart';
 
 class RestaurantView extends StatelessWidget {
   final String id;
@@ -78,7 +79,16 @@ class RestaurantView extends StatelessWidget {
                                         Icons.map,
                                         color: Colors.orange,
                                       ),
-                                      onPressed: () {}),
+                                      onPressed: () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  RestaurantMapView(
+                                                    coordinates:
+                                                        restaurant.coordinates,
+                                                    name: restaurant.name,
+                                                    type: restaurant.type,
+                                                  )))),
                                 )
                               ],
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
