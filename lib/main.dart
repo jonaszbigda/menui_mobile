@@ -24,6 +24,7 @@ class App extends StatelessWidget {
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
           home: HomePage(),
+          debugShowCheckedModeBanner: false,
         ));
   }
 }
