@@ -14,18 +14,13 @@ class MapViewState extends State<MapView> {
   MenuiServices services = new MenuiServices();
   Position position;
 
-  Future<Map<MarkerId, Marker>> createMarkers() async {
+  Future<MarkersAndLocation> createMarkers() async {
     Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    setState(() {
-      position = position;
-    });
-    print('position is set');
-    /* List<Restaurant> restaurants = await services.fetchRestaurantsByLocation(
-        position.latitude, position.longitude, 1000); */
-    List<Restaurant> restaurants =
-        await services.fetchRestaurantsByLocation(20.60912, 52.87728);
+    LatLng location = new LatLng(position.latitude, position.longitude);
+    List<Restaurant> restaurants = await services.fetchRestaurantsByLocation(
+        position.latitude, position.longitude);
     if (restaurants.isNotEmpty) {
       for (Restaurant thisRestaurant in restaurants) {
         final MarkerId markerId = MarkerId(thisRestaurant.name);
@@ -40,55 +35,59 @@ class MapViewState extends State<MapView> {
         markers[markerId] = marker;
       }
     }
-    return markers;
+    return new MarkersAndLocation(markers: markers, coordinates: location);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<Map<MarkerId, Marker>>(
+      body: FutureBuilder<MarkersAndLocation>(
         future: createMarkers(),
-        builder: (BuildContext context,
-            AsyncSnapshot<Map<MarkerId, Marker>> snapshot) {
-          Map<MarkerId, Marker> markers = snapshot.data;
-          List<Widget> children;
+        builder:
+            (BuildContext context, AsyncSnapshot<MarkersAndLocation> snapshot) {
+          MarkersAndLocation data = snapshot.data;
+          Widget child;
           if (snapshot.hasData) {
             final CameraPosition _initialPosition = CameraPosition(
-              target: LatLng(20, 58),
-              zoom: 16,
+              target: data.coordinates,
+              zoom: 14,
             );
-            children = <Widget>[
-              GoogleMap(
-                mapType: MapType.normal,
-                initialCameraPosition: _initialPosition,
-                onMapCreated: (GoogleMapController controller) {
-                  _controller.complete(controller);
-                },
-                markers: Set<Marker>.of(markers.values),
-              ),
-            ];
+            child = GoogleMap(
+              mapType: MapType.normal,
+              initialCameraPosition: _initialPosition,
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
+              markers: Set<Marker>.of(data.markers.values),
+            );
           } else if (snapshot.hasError) {
-            children = <Widget>[Text('error')];
-          } else {
-            children = <Widget>[
-              SizedBox(
-                child: CircularProgressIndicator(),
-                width: 60,
-                height: 60,
+            child = Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [Text("error...")],
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 16),
-                child: Text('Awaiting result...'),
-              )
-            ];
+            );
+          } else {
+            child = Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    child: CircularProgressIndicator(),
+                    width: 60,
+                    height: 60,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 16),
+                    child: Text('Awaiting result...'),
+                  )
+                ],
+              ),
+            );
           }
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: children,
-            ),
-          );
+          return child;
         },
       ),
       floatingActionButton: Padding(

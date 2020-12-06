@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import './settings.dart';
@@ -451,4 +452,11 @@ class MenuiWorkingHours {
 
   MenuiWorkingHours(
       this.pn, this.wt, this.sr, this.cz, this.pt, this.sb, this.nd);
+}
+
+class MarkersAndLocation {
+  final Map<MarkerId, Marker> markers;
+  final LatLng coordinates;
+
+  MarkersAndLocation({@required this.markers, @required this.coordinates});
 }
