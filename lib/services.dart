@@ -151,7 +151,7 @@ class MenuiServices {
       double lat, double lng) async {
     final radius = await settings.getRadius();
     final response = await http
-        .get('${backendURL}search/location?lon=$lng&lat=$lat&radius=$radius');
+        .get('${backendURL}search/location?lon=$lat&lat=$lng&radius=$radius');
     if (response.statusCode == 200 || response.statusCode == 304) {
       final List decoded = jsonDecode(response.body);
       List<Restaurant> results = [];

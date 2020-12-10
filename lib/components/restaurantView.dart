@@ -127,7 +127,7 @@ class RestaurantView extends StatelessWidget {
                                   TextStyle(color: Colors.orange, fontSize: 14),
                             ),
                             SizedBox(
-                              height: 12,
+                              height: 6,
                             ),
                             MenuiDoubleColorText(
                               leading: 'Kuchnia: ',
@@ -143,7 +143,7 @@ class RestaurantView extends StatelessWidget {
                               following: '${restaurant.phone}',
                             ),
                             SizedBox(
-                              height: 12,
+                              height: 6,
                             ),
                             Text(
                               'Godziny otwarcia',
@@ -151,12 +151,12 @@ class RestaurantView extends StatelessWidget {
                                   TextStyle(color: Colors.orange, fontSize: 14),
                             ),
                             SizedBox(
-                              height: 12,
+                              height: 6,
                             ),
                             WorkingHoursList(
                                 workingHours: restaurant.workingHours),
                             SizedBox(
-                              height: 12,
+                              height: 6,
                             ),
                             Text(
                               'Social media',
@@ -164,11 +164,11 @@ class RestaurantView extends StatelessWidget {
                                   TextStyle(color: Colors.orange, fontSize: 14),
                             ),
                             SizedBox(
-                              height: 12,
+                              height: 6,
                             ),
                             SocialMedia(links: restaurant.links),
                             SizedBox(
-                              height: 12,
+                              height: 6,
                             ),
                           ],
                         ),

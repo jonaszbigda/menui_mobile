@@ -3,7 +3,9 @@ import '../services.dart';
 
 class Allergens extends StatelessWidget {
   final MenuiAllergens allergens;
-  final double edgeInsets = 6;
+  final double edgeInsets = 4;
+  final double imagesWidth = 14;
+  final double fontSize = 8;
 
   Allergens({@required this.allergens});
 
@@ -22,13 +24,14 @@ class Allergens extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_eggs.png',
-                      width: 18,
+                      width: imagesWidth,
                     ),
                     height: 26,
                   ),
                   Text(
                     'Jaja',
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                    style:
+                        TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
                 ],
               )),
@@ -41,13 +44,14 @@ class Allergens extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_gluten.png',
-                      width: 18,
+                      width: imagesWidth,
                     ),
                     height: 26,
                   ),
                   Text(
                     'Gluten',
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                    style:
+                        TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
                 ],
               )),
@@ -60,13 +64,14 @@ class Allergens extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_lactose.png',
-                      width: 18,
+                      width: imagesWidth,
                     ),
                     height: 26,
                   ),
                   Text(
                     'Laktoza',
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                    style:
+                        TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
                 ],
               )),
@@ -79,13 +84,14 @@ class Allergens extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_peanuts.png',
-                      width: 18,
+                      width: imagesWidth,
                     ),
                     height: 26,
                   ),
                   Text(
                     'Orzechy',
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                    style:
+                        TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
                 ],
               )),
@@ -98,13 +104,14 @@ class Allergens extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_seaFood.png',
-                      width: 18,
+                      width: imagesWidth,
                     ),
                     height: 26,
                   ),
                   Text(
                     'Owoce morza',
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                    style:
+                        TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
                 ],
               )),
@@ -117,13 +124,14 @@ class Allergens extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_sesame.png',
-                      width: 18,
+                      width: imagesWidth,
                     ),
                     height: 26,
                   ),
                   Text(
                     'Sezam',
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                    style:
+                        TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
                 ],
               )),
@@ -136,13 +144,14 @@ class Allergens extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_soy.png',
-                      width: 18,
+                      width: imagesWidth,
                     ),
                     height: 26,
                   ),
                   Text(
                     'Soja',
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                    style:
+                        TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
                 ],
               )),

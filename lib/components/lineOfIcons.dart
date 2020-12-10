@@ -3,7 +3,9 @@ import '../services.dart';
 
 class LineOfIcons extends StatelessWidget {
   final MenuiTags tags;
-  final double edgeInsets = 6;
+  final double edgeInsets = 4;
+  final double imagesWidth = 14;
+  final double fontSize = 8;
 
   LineOfIcons({@required this.tags});
 
@@ -22,13 +24,14 @@ class LineOfIcons extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_alcohol.png',
-                      width: 18,
+                      width: imagesWidth,
                     ),
                     height: 26,
                   ),
                   Text(
                     'Alkohol',
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                    style:
+                        TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
                 ],
               )),
@@ -41,17 +44,19 @@ class LineOfIcons extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_card.png',
-                      width: 18,
+                      width: imagesWidth,
                     ),
                     height: 26,
                   ),
                   Text(
                     'Płatność',
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                    style:
+                        TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   ),
                   Text(
                     'kartą',
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                    style:
+                        TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
                 ],
               )),
@@ -64,13 +69,14 @@ class LineOfIcons extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_delivery.png',
-                      width: 18,
+                      width: imagesWidth,
                     ),
                     height: 26,
                   ),
                   Text(
                     'Dowozimy',
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                    style:
+                        TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
                 ],
               )),
@@ -83,13 +89,14 @@ class LineOfIcons extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_glutenFree.png',
-                      width: 18,
+                      width: imagesWidth,
                     ),
                     height: 26,
                   ),
                   Text(
                     'Bezglutenowe',
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                    style:
+                        TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
                 ],
               )),
@@ -102,17 +109,19 @@ class LineOfIcons extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_pets.png',
-                      width: 18,
+                      width: imagesWidth,
                     ),
                     height: 26,
                   ),
                   Text(
                     'Lubimy',
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                    style:
+                        TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   ),
                   Text(
                     'zwierzaczki',
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                    style:
+                        TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
                 ],
               )),
@@ -125,13 +134,14 @@ class LineOfIcons extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_vegan.png',
-                      width: 18,
+                      width: imagesWidth,
                     ),
                     height: 26,
                   ),
                   Text(
                     'Wegańskie',
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                    style:
+                        TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
                 ],
               )),
@@ -144,13 +154,14 @@ class LineOfIcons extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_vegetarian.png',
-                      width: 18,
+                      width: imagesWidth,
                     ),
                     height: 26,
                   ),
                   Text(
                     'Wegetariańskie',
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                    style:
+                        TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
                 ],
               )),
