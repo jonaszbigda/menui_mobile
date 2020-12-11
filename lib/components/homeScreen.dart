@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'searchBar.dart';
 import '../settings.dart';
 import 'mapView.dart';
+import 'package:package_info/package_info.dart';
 
 class HomePage extends StatelessWidget {
   final MenuiSettings settings = new MenuiSettings();
@@ -250,7 +251,10 @@ class HomePage extends StatelessWidget {
 
   // SHOW APP INFO
 
-  void showAppInfoDialog(BuildContext context) {
+  void showAppInfoDialog(BuildContext context) async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String version = packageInfo.version;
+
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -266,7 +270,7 @@ class HomePage extends StatelessWidget {
                       style: TextStyle(color: Colors.white),
                     ),
                     subtitle: Text(
-                      '0.0.1 (alpha)',
+                      version,
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.grey),
                     )),
@@ -281,11 +285,6 @@ class HomePage extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.grey),
                     )),
-                Text(
-                  'Menui Sp. z o.o. - wszelkie prawa zastrzeżone.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey, fontSize: 12),
-                )
               ]);
         });
   }
