@@ -4,16 +4,18 @@ import '../services.dart';
 class Allergens extends StatelessWidget {
   final MenuiAllergens allergens;
   final double edgeInsets = 4;
-  final double imagesWidth = 14;
-  final double fontSize = 8;
+  final double imagesWidth = 16;
+  final double fontSize = 9;
+  final double maxWidth = 50;
 
   Allergens({@required this.allergens});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Wrap(
+      spacing: 4.0,
+      alignment: WrapAlignment.center,
+      direction: Axis.horizontal,
       children: <Widget>[
         if (allergens.eggs == true)
           Container(
@@ -21,6 +23,7 @@ class Allergens extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
+                    constraints: BoxConstraints(maxWidth: maxWidth),
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_eggs.png',
@@ -41,6 +44,7 @@ class Allergens extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
+                    constraints: BoxConstraints(maxWidth: maxWidth),
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_gluten.png',
@@ -61,6 +65,7 @@ class Allergens extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
+                    constraints: BoxConstraints(maxWidth: maxWidth),
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_lactose.png',
@@ -81,6 +86,7 @@ class Allergens extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
+                    constraints: BoxConstraints(maxWidth: maxWidth),
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_peanuts.png',
@@ -101,6 +107,7 @@ class Allergens extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
+                    constraints: BoxConstraints(maxWidth: maxWidth),
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_seaFood.png',
@@ -121,6 +128,7 @@ class Allergens extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
+                    constraints: BoxConstraints(maxWidth: maxWidth),
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_sesame.png',
@@ -141,6 +149,7 @@ class Allergens extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
+                    constraints: BoxConstraints(maxWidth: maxWidth),
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_soy.png',

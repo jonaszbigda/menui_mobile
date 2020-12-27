@@ -4,16 +4,18 @@ import '../services.dart';
 class LineOfIcons extends StatelessWidget {
   final MenuiTags tags;
   final double edgeInsets = 4;
-  final double imagesWidth = 14;
-  final double fontSize = 8;
+  final double imagesWidth = 16;
+  final double fontSize = 9;
+  final double maxWidth = 50;
 
   LineOfIcons({@required this.tags});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Wrap(
+      spacing: 4.0,
+      alignment: WrapAlignment.center,
+      direction: Axis.horizontal,
       children: <Widget>[
         if (tags.alcohol == true)
           Container(
@@ -21,6 +23,7 @@ class LineOfIcons extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
+                    constraints: BoxConstraints(maxWidth: maxWidth),
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_alcohol.png',
@@ -41,6 +44,8 @@ class LineOfIcons extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
+                    constraints: BoxConstraints(maxWidth: maxWidth),
+                    width: maxWidth,
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_card.png',
@@ -66,6 +71,7 @@ class LineOfIcons extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
+                    constraints: BoxConstraints(maxWidth: maxWidth),
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_delivery.png',
@@ -86,6 +92,7 @@ class LineOfIcons extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
+                    constraints: BoxConstraints(maxWidth: maxWidth),
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_glutenFree.png',
@@ -106,6 +113,7 @@ class LineOfIcons extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
+                    constraints: BoxConstraints(maxWidth: maxWidth),
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_pets.png',
@@ -131,6 +139,7 @@ class LineOfIcons extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
+                    constraints: BoxConstraints(maxWidth: maxWidth),
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_vegan.png',
@@ -151,6 +160,7 @@ class LineOfIcons extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
+                    constraints: BoxConstraints(maxWidth: maxWidth),
                     alignment: Alignment.center,
                     child: Image.asset(
                       'img/i_vegetarian.png',

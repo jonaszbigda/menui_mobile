@@ -29,7 +29,7 @@ class IconChip extends StatelessWidget {
             SizedBox(height: 4),
             if (value == "")
               Text(
-                'brak danych :(',
+                '-',
                 style: TextStyle(color: Colors.white, fontSize: 14),
               ),
             if (value != "")

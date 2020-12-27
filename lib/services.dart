@@ -409,6 +409,20 @@ class MenuiAllergens {
 
   MenuiAllergens(this.gluten, this.lactose, this.soy, this.eggs, this.seaFood,
       this.peanuts, this.sesame);
+
+  bool hasAllergens() {
+    if (!this.gluten &&
+        !this.lactose &&
+        !this.soy &&
+        !this.eggs &&
+        !this.seaFood &&
+        !this.peanuts &&
+        !this.sesame) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }
 
 class MenuiLunchMenuSet {
