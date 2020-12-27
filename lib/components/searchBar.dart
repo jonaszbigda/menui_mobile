@@ -17,7 +17,7 @@ class MenuiSearchBarState extends State<MenuiSearchBar> {
   final _controller = TextEditingController();
   String previousText = '';
 
-  var suggestions = <String>[];
+  MenuiSuggestions suggestions;
   bool suggestionsOpen = false;
 
   @override
@@ -29,20 +29,19 @@ class MenuiSearchBarState extends State<MenuiSearchBar> {
   Future<void> fetchAutocomplete() async {
     if (_controller.text.isNotEmpty && _controller.text != previousText) {
       previousText = _controller.text;
-      final List<String> results =
+      final MenuiSuggestions results =
           await services.fetchAutocomplete(_controller.text);
-
       setState(() {
         suggestions = results;
       });
 
-      if (!suggestionsOpen && results.isNotEmpty) {
+      if (!suggestionsOpen && !results.suggestionsEmpty()) {
         setState(() {
           suggestionsOpen = true;
         });
         _overlayEntry = _createOverlayEntry();
         Overlay.of(context).insert(_overlayEntry);
-      } else if (results.isEmpty) {
+      } else if (results.suggestionsEmpty()) {
         hideSuggestions();
       }
     } else {
@@ -63,7 +62,7 @@ class MenuiSearchBarState extends State<MenuiSearchBar> {
     if (suggestionsOpen) {
       _overlayEntry.remove();
       setState(() {
-        suggestions = [];
+        suggestions = new MenuiSuggestions.empty();
         suggestionsOpen = false;
       });
     }
@@ -102,19 +101,29 @@ class MenuiSearchBarState extends State<MenuiSearchBar> {
                             child: ListView.builder(
                                 padding: EdgeInsets.zero,
                                 shrinkWrap: true,
-                                itemCount: suggestions.length,
+                                itemCount: suggestions.getLenght(),
                                 itemBuilder: (context, index) {
                                   return ListTile(
                                     onTap: () {
-                                      _controller.text = suggestions[index];
+                                      _controller.text =
+                                          suggestions.getSuggestion(index);
                                       searchRestaurantsByString();
                                     },
-                                    leading: Icon(
-                                      Icons.search_rounded,
-                                      color: Colors.grey,
-                                    ),
+                                    leading: (() {
+                                      if (suggestions.isCity(index)) {
+                                        return Icon(
+                                          Icons.location_city_rounded,
+                                          color: Colors.grey,
+                                        );
+                                      } else {
+                                        return Icon(
+                                          Icons.fastfood_rounded,
+                                          color: Colors.grey,
+                                        );
+                                      }
+                                    }()),
                                     title: Text(
-                                      suggestions[index],
+                                      suggestions.getSuggestion(index),
                                       style: TextStyle(color: Colors.grey),
                                     ),
                                   );

@@ -8,7 +8,7 @@ class MenuiServices {
   final String backendURL = 'https://api.menui.pl/';
   final MenuiSettings settings = new MenuiSettings();
 
-  Future<List<String>> fetchAutocomplete(String text) async {
+  Future<MenuiSuggestions> fetchAutocomplete(String text) async {
     final response =
         await http.get('${backendURL}search/autocomplete?string=$text');
     if (response.statusCode == 200 || response.statusCode == 304) {
@@ -17,12 +17,11 @@ class MenuiServices {
       final List<String> cities = citiesDynamic.cast<String>().toList();
       final List<String> restaurants =
           restaurantsDynamic.cast<String>().toList();
-      final List<String> result = [...cities, ...restaurants];
-
+      final MenuiSuggestions result =
+          new MenuiSuggestions(cities: cities, names: restaurants);
       return result;
     } else {
-      print("coś tu nie zagrało podczas pobierania sugestii");
-      return [];
+      return new MenuiSuggestions(cities: [], names: []);
     }
   }
 
@@ -459,4 +458,40 @@ class MarkersAndLocation {
   final LatLng coordinates;
 
   MarkersAndLocation({@required this.markers, @required this.coordinates});
+}
+
+class MenuiSuggestions {
+  final List<String> cities;
+  final List<String> names;
+
+  MenuiSuggestions({@required this.cities, @required this.names});
+
+  MenuiSuggestions.empty({this.cities = const [], this.names = const []});
+
+  bool suggestionsEmpty() {
+    if (this.cities.isEmpty && this.names.isEmpty) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  int getLenght() {
+    int lenght = this.cities.length + this.names.length;
+    return lenght;
+  }
+
+  String getSuggestion(int index) {
+    List<String> suggestions = new List<String>.from(this.cities)
+      ..addAll(this.names);
+    return suggestions[index];
+  }
+
+  bool isCity(int index) {
+    if (index > (this.cities.length - 1)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

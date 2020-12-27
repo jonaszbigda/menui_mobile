@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../services.dart';
 import 'package:geolocator/geolocator.dart';
+import 'restaurantView.dart';
 
 class MapView extends StatefulWidget {
   @override
@@ -30,6 +31,11 @@ class MapViewState extends State<MapView> {
             position: LatLng(
                 thisRestaurant.coordinates[0], thisRestaurant.coordinates[1]),
             infoWindow: InfoWindow(
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            RestaurantView(id: thisRestaurant.id))),
                 title: '${thisRestaurant.name}',
                 snippet: 'Kuchnia: ${thisRestaurant.type}'));
         markers[markerId] = marker;
@@ -65,7 +71,7 @@ class MapViewState extends State<MapView> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [Text("error...")],
+                children: [Text("Błąd...")],
               ),
             );
           } else {
@@ -81,7 +87,7 @@ class MapViewState extends State<MapView> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 16),
-                    child: Text('Awaiting result...'),
+                    child: Text('Szukam restauracji...'),
                   )
                 ],
               ),
