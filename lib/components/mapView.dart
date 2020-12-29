@@ -58,13 +58,164 @@ class MapViewState extends State<MapView> {
               target: data.coordinates,
               zoom: 14,
             );
-            child = GoogleMap(
-              mapType: MapType.normal,
-              initialCameraPosition: _initialPosition,
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-              },
-              markers: Set<Marker>.of(data.markers.values),
+            child = Column(
+              children: <Widget>[
+                Container(
+                  height: 70,
+                  decoration: BoxDecoration(color: Colors.grey[850]),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 40,
+                      ),
+                      Container(
+                        height: 30,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.search_rounded,
+                              color: Colors.orange,
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              'Znaleziono: ${data.markers.length}',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: GoogleMap(
+                    mapType: MapType.normal,
+                    initialCameraPosition: _initialPosition,
+                    onMapCreated: (GoogleMapController controller) {
+                      _controller.complete(controller);
+                    },
+                    markers: Set<Marker>.of(data.markers.values),
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(color: Colors.grey[850]),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      RaisedButton(
+                        color: Colors.grey[850],
+                        elevation: 0,
+                        padding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Icon(
+                              Icons.arrow_back,
+                              color: Colors.orange,
+                            ),
+                            Text(
+                              'Cofnij',
+                              style: TextStyle(
+                                  color: Colors.grey[200], fontSize: 12),
+                            )
+                          ],
+                        ),
+                      ),
+                      RaisedButton(
+                        color: Colors.grey[850],
+                        elevation: 0,
+                        padding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Icon(
+                              Icons.location_pin,
+                              color: Colors.orange,
+                            ),
+                            Text(
+                              'Promień',
+                              style: TextStyle(
+                                  color: Colors.grey[200], fontSize: 12),
+                            ),
+                            Text(
+                              '600m',
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 10),
+                            )
+                          ],
+                        ),
+                      ),
+                      RaisedButton(
+                        color: Colors.grey[850],
+                        elevation: 0,
+                        padding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Icon(
+                              Icons.map_rounded,
+                              color: Colors.orange,
+                            ),
+                            Text(
+                              'Kuchnia',
+                              style: TextStyle(
+                                  color: Colors.grey[200], fontSize: 12),
+                            ),
+                            Text(
+                              'Wszystkie',
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 10),
+                            )
+                          ],
+                        ),
+                      ),
+                      RaisedButton(
+                        color: Colors.grey[850],
+                        elevation: 0,
+                        padding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Icon(
+                              Icons.filter_list_alt,
+                              color: Colors.orange,
+                            ),
+                            Text(
+                              'Filtry',
+                              style: TextStyle(
+                                  color: Colors.grey[200], fontSize: 12),
+                            ),
+                            Text(
+                              'Brak',
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 10),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             );
           } else if (snapshot.hasError) {
             child = Center(
@@ -75,41 +226,34 @@ class MapViewState extends State<MapView> {
               ),
             );
           } else {
-            child = Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    child: CircularProgressIndicator(),
-                    width: 60,
-                    height: 60,
+            child = Container(
+                decoration: BoxDecoration(color: Colors.grey[850]),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.white,
+                        ),
+                        width: 60,
+                        height: 60,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 16),
+                        child: Text(
+                          'Szukam restauracji...',
+                          style: TextStyle(color: Colors.grey[200]),
+                        ),
+                      )
+                    ],
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 16),
-                    child: Text('Szukam restauracji...'),
-                  )
-                ],
-              ),
-            );
+                ));
           }
           return child;
         },
       ),
-      floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: 20),
-        child: FloatingActionButton(
-          backgroundColor: Colors.grey[800],
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Icon(
-            Icons.arrow_back_outlined,
-            color: Colors.orange,
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
     );
   }
 }

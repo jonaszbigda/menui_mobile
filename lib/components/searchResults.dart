@@ -49,6 +49,93 @@ class SearchResults extends StatelessWidget {
           ),
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Container(
+        decoration: BoxDecoration(color: Colors.grey[850]),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            RaisedButton(
+              color: Colors.grey[850],
+              elevation: 0,
+              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(
+                    Icons.arrow_back_rounded,
+                    color: Colors.orange,
+                  ),
+                  Text(
+                    'Cofnij',
+                    style: TextStyle(color: Colors.grey[200], fontSize: 12),
+                  )
+                ],
+              ),
+            ),
+            RaisedButton(
+              color: Colors.grey[850],
+              elevation: 0,
+              padding: EdgeInsets.all(8),
+              onPressed: () {},
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(
+                    Icons.note_rounded,
+                    color: Colors.orange,
+                  ),
+                  Text(
+                    'Zamówienie',
+                    style: TextStyle(color: Colors.grey[200], fontSize: 12),
+                  )
+                ],
+              ),
+            ),
+            RaisedButton(
+              color: Colors.grey[850],
+              elevation: 0,
+              padding: EdgeInsets.all(8),
+              onPressed: () {},
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(
+                    Icons.favorite_rounded,
+                    color: Colors.orange,
+                  ),
+                  Text(
+                    'Ulubione',
+                    style: TextStyle(color: Colors.grey[200], fontSize: 12),
+                  )
+                ],
+              ),
+            ),
+            RaisedButton(
+              color: Colors.grey[850],
+              elevation: 0,
+              padding: EdgeInsets.all(8),
+              onPressed: () {},
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(
+                    Icons.settings,
+                    color: Colors.orange,
+                  ),
+                  Text(
+                    'Ustawienia',
+                    style: TextStyle(color: Colors.grey[200], fontSize: 12),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
