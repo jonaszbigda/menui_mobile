@@ -61,15 +61,108 @@ class MapViewState extends State<MapView> {
             child = Column(
               children: <Widget>[
                 Container(
-                  height: 70,
                   decoration: BoxDecoration(color: Colors.grey[850]),
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 40,
+                        height: 20,
                       ),
                       Container(
-                        height: 30,
+                        decoration: BoxDecoration(color: Colors.grey[850]),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            RaisedButton(
+                              color: Colors.grey[850],
+                              elevation: 0,
+                              padding:
+                              EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.location_pin,
+                                    color: Colors.orange,
+                                  ),
+                                  Text(
+                                    'Promień',
+                                    style: TextStyle(
+                                        color: Colors.grey[200], fontSize: 12),
+                                  ),
+                                  Text(
+                                    '600m',
+                                    style:
+                                    TextStyle(color: Colors.grey, fontSize: 10),
+                                  )
+                                ],
+                              ),
+                            ),
+                            RaisedButton(
+                              color: Colors.grey[850],
+                              elevation: 0,
+                              padding:
+                              EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.map_rounded,
+                                    color: Colors.orange,
+                                  ),
+                                  Text(
+                                    'Kuchnia',
+                                    style: TextStyle(
+                                        color: Colors.grey[200], fontSize: 12),
+                                  ),
+                                  Text(
+                                    'Wszystkie',
+                                    style:
+                                    TextStyle(color: Colors.grey, fontSize: 10),
+                                  )
+                                ],
+                              ),
+                            ),
+                            RaisedButton(
+                              color: Colors.grey[850],
+                              elevation: 0,
+                              padding:
+                              EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.filter_list_alt,
+                                    color: Colors.orange,
+                                  ),
+                                  Text(
+                                    'Filtry',
+                                    style: TextStyle(
+                                        color: Colors.grey[200], fontSize: 12),
+                                  ),
+                                  Text(
+                                    'Brak',
+                                    style:
+                                    TextStyle(color: Colors.grey, fontSize: 10),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[700]
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -77,12 +170,9 @@ class MapViewState extends State<MapView> {
                               Icons.search_rounded,
                               color: Colors.orange,
                             ),
-                            SizedBox(
-                              width: 8,
-                            ),
                             Text(
                               'Znaleziono: ${data.markers.length}',
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: Colors.white, fontSize: 12),
                             ),
                           ],
                         ),
@@ -104,26 +194,22 @@ class MapViewState extends State<MapView> {
                   decoration: BoxDecoration(color: Colors.grey[850]),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: <Widget>[
                       RaisedButton(
                         color: Colors.grey[850],
                         elevation: 0,
-                        padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 4),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
+                        padding: EdgeInsets.all(8),
+                        onPressed: () {},
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Icon(
-                              Icons.arrow_back,
+                              Icons.home_rounded,
                               color: Colors.orange,
                             ),
                             Text(
-                              'Cofnij',
-                              style: TextStyle(
-                                  color: Colors.grey[200], fontSize: 12),
+                              'Szukaj',
+                              style: TextStyle(color: Colors.grey[200], fontSize: 12),
                             )
                           ],
                         ),
@@ -131,27 +217,18 @@ class MapViewState extends State<MapView> {
                       RaisedButton(
                         color: Colors.grey[850],
                         elevation: 0,
-                        padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 4),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
+                        padding: EdgeInsets.all(8),
+                        onPressed: () {},
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Icon(
-                              Icons.location_pin,
+                              Icons.note_rounded,
                               color: Colors.orange,
                             ),
                             Text(
-                              'Promień',
-                              style: TextStyle(
-                                  color: Colors.grey[200], fontSize: 12),
-                            ),
-                            Text(
-                              '600m',
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 10),
+                              'Zamówienie',
+                              style: TextStyle(color: Colors.grey[200], fontSize: 12),
                             )
                           ],
                         ),
@@ -159,27 +236,18 @@ class MapViewState extends State<MapView> {
                       RaisedButton(
                         color: Colors.grey[850],
                         elevation: 0,
-                        padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 4),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
+                        padding: EdgeInsets.all(8),
+                        onPressed: () {},
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Icon(
-                              Icons.map_rounded,
+                              Icons.favorite_rounded,
                               color: Colors.orange,
                             ),
                             Text(
-                              'Kuchnia',
-                              style: TextStyle(
-                                  color: Colors.grey[200], fontSize: 12),
-                            ),
-                            Text(
-                              'Wszystkie',
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 10),
+                              'Ulubione',
+                              style: TextStyle(color: Colors.grey[200], fontSize: 12),
                             )
                           ],
                         ),
@@ -187,31 +255,24 @@ class MapViewState extends State<MapView> {
                       RaisedButton(
                         color: Colors.grey[850],
                         elevation: 0,
-                        padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                        padding: EdgeInsets.all(8),
                         onPressed: () {
-                          Navigator.pop(context);
+                          //showSettings(context);
                         },
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Icon(
-                              Icons.filter_list_alt,
+                              Icons.settings,
                               color: Colors.orange,
                             ),
                             Text(
-                              'Filtry',
-                              style: TextStyle(
-                                  color: Colors.grey[200], fontSize: 12),
-                            ),
-                            Text(
-                              'Brak',
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 10),
+                              'Ustawienia',
+                              style: TextStyle(color: Colors.grey[200], fontSize: 12),
                             )
                           ],
                         ),
-                      ),
+                      )
                     ],
                   ),
                 ),

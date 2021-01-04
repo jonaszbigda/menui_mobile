@@ -56,6 +56,25 @@ class HomePage extends StatelessWidget {
               color: Colors.grey[850],
               elevation: 0,
               padding: EdgeInsets.all(8),
+              onPressed: () {},
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(
+                    Icons.home_rounded,
+                    color: Colors.orange,
+                  ),
+                  Text(
+                    'Szukaj',
+                    style: TextStyle(color: Colors.grey[200], fontSize: 12),
+                  )
+                ],
+              ),
+            ),
+            RaisedButton(
+              color: Colors.grey[850],
+              elevation: 0,
+              padding: EdgeInsets.all(8),
               onPressed: () {
                 showSettings(context);
               },

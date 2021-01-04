@@ -83,4 +83,27 @@ class MenuiSettings {
       return "Nie";
     }
   }
+
+  // ADD DISH TO ORDER --- TODO
+  void addToOrder(String id) async{
+    final settings = await SharedPreferences.getInstance();
+    if(settings.containsKey('order')){
+      List<String> order = settings.getStringList('order');
+      order.add(id);
+    } else {
+      final List<String> order = new List<String>();
+      order.add(id);
+    }
+  }
+
+  // GET ORDER
+  Future<List<String>> getOrder() async{
+    final settings = await SharedPreferences.getInstance();
+    if(settings.containsKey('order')){
+      List<String> order = settings.getStringList('order');
+      return order;
+    } else {
+      return new List<String>();
+    }
+  }
 }
