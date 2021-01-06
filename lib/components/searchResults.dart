@@ -66,11 +66,11 @@ class SearchResults extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Icon(
-                    Icons.arrow_back_rounded,
+                    Icons.home_rounded,
                     color: Colors.orange,
                   ),
                   Text(
-                    'Cofnij',
+                    'Szukaj',
                     style: TextStyle(color: Colors.grey[200], fontSize: 12),
                   )
                 ],

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'searchBar.dart';
 import '../settings.dart';
-import 'mapView.dart';
+import 'homeScreen.dart';
 import 'orderView.dart';
-import 'favoritesView.dart';
 
-class HomePage extends StatelessWidget {
-  final MenuiSettings settings = new MenuiSettings();
+class FavoritesView extends StatelessWidget {
+  final settings = new MenuiSettings();
 
   @override
   Widget build(BuildContext context) {
@@ -15,36 +13,53 @@ class HomePage extends StatelessWidget {
         decoration: BoxDecoration(
             image: DecorationImage(
                 image: AssetImage("img/bg_tile.jpg"), fit: BoxFit.cover)),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset(
-                "img/logo_orange.png",
-                width: 160,
+        child: Column(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(color: Colors.grey[850]),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(color: Colors.grey[850]),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        RaisedButton(
+                          color: Colors.grey[850],
+                          elevation: 0,
+                          padding:
+                              EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Icon(
+                                Icons.arrow_back_rounded,
+                                color: Colors.orange,
+                              ),
+                              Text(
+                                'Cofnij',
+                                style: TextStyle(
+                                    color: Colors.grey[200], fontSize: 12),
+                              )
+                            ],
+                          ),
+                        ),
+                        Row(
+                          children: [],
+                        )
+                      ],
+                    ),
+                  )
+                ],
               ),
-              MenuiSearchBar(),
-              Text(
-                'lub',
-                style: TextStyle(color: Colors.grey[500]),
-              ),
-              RaisedButton.icon(
-                color: Colors.grey[850],
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MapView())),
-                icon: Icon(
-                  Icons.my_location,
-                  color: Colors.orange,
-                ),
-                label: Text(
-                  'Pokaż w pobliżu',
-                  style: TextStyle(color: Colors.grey[400]),
-                ),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50)),
-              )
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -57,7 +72,8 @@ class HomePage extends StatelessWidget {
               color: Colors.grey[850],
               elevation: 0,
               padding: EdgeInsets.all(8),
-              onPressed: () {},
+              onPressed: () => Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => HomePage())),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -67,10 +83,7 @@ class HomePage extends StatelessWidget {
                   ),
                   Text(
                     'Szukaj',
-                    style: TextStyle(
-                        color: Colors.grey[200],
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400),
+                    style: TextStyle(color: Colors.grey[200], fontSize: 12),
                   )
                 ],
               ),
@@ -90,10 +103,7 @@ class HomePage extends StatelessWidget {
                   ),
                   Text(
                     'Zamówienie',
-                    style: TextStyle(
-                        color: Colors.grey[200],
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400),
+                    style: TextStyle(color: Colors.grey[200], fontSize: 12),
                   )
                 ],
               ),
@@ -102,8 +112,7 @@ class HomePage extends StatelessWidget {
               color: Colors.grey[850],
               elevation: 0,
               padding: EdgeInsets.all(8),
-              onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => FavoritesView())),
+              onPressed: () {},
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -113,10 +122,7 @@ class HomePage extends StatelessWidget {
                   ),
                   Text(
                     'Ulubione',
-                    style: TextStyle(
-                        color: Colors.grey[200],
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400),
+                    style: TextStyle(color: Colors.grey[200], fontSize: 12),
                   )
                 ],
               ),
@@ -137,10 +143,7 @@ class HomePage extends StatelessWidget {
                   ),
                   Text(
                     'Ustawienia',
-                    style: TextStyle(
-                        color: Colors.grey[200],
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400),
+                    style: TextStyle(color: Colors.grey[200], fontSize: 12),
                   )
                 ],
               ),

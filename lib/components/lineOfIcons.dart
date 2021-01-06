@@ -3,17 +3,17 @@ import '../services.dart';
 
 class LineOfIcons extends StatelessWidget {
   final MenuiTags tags;
-  final double edgeInsets = 4;
-  final double imagesWidth = 16;
-  final double fontSize = 9;
-  final double maxWidth = 50;
+  final double edgeInsets = 3;
+  final double imagesWidth = 14;
+  final double fontSize = 8;
+  final double maxWidth = 40;
 
   LineOfIcons({@required this.tags});
 
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: 4.0,
+      spacing: 2.0,
       alignment: WrapAlignment.center,
       direction: Axis.horizontal,
       children: <Widget>[
