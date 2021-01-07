@@ -37,80 +37,79 @@ class RestaurantCard extends StatelessWidget {
                 padding: EdgeInsets.only(right: 8),
               ),
               Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text(
-                    restaurant.name,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: TextStyle(color: Colors.orange[600], fontSize: 16),
-                  ),
-                  Container(
-                      child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.location_city,
-                              size: 14,
-                              color: Colors.white,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 4),
+                      child: Text(
+                        restaurant.name,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style:
+                            TextStyle(color: Colors.orange[600], fontSize: 14),
+                      ),
+                    ),
+                    Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.location_city,
+                            size: 14,
+                            color: Colors.white,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 4),
+                            child: Text(
+                              '${restaurant.city}, ${restaurant.adress}',
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 11),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 4),
-                              child: Text(
-                                '${restaurant.city}, ${restaurant.adress}',
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 12),
-                              ),
+                          ),
+                        ]),
+                    Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.restaurant,
+                            size: 14,
+                            color: Colors.white,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 4),
+                            child: Text(
+                              '${restaurant.type}',
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 11),
                             ),
-                          ]),
-                      Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.restaurant,
-                              size: 14,
-                              color: Colors.white,
+                          ),
+                        ]),
+                    Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.timer,
+                            size: 14,
+                            color: Colors.white,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 4),
+                            child: Text(
+                              '$_openHours',
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 11),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 4),
-                              child: Text(
-                                '${restaurant.type}',
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 12),
-                              ),
-                            ),
-                          ]),
-                      Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.timer,
-                              size: 14,
-                              color: Colors.white,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 4),
-                              child: Text(
-                                '$_openHours',
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 12),
-                              ),
-                            ),
-                          ]),
-                      Padding(
-                        child: LineOfIconsSmall(tags: restaurant.tags),
-                        padding: EdgeInsets.only(top: 4),
-                      )
-                    ],
-                  )),
-                ],
-              )),
+                          ),
+                        ]),
+                    Padding(
+                      padding: EdgeInsets.only(top: 2),
+                      child: LineOfIconsSmall(tags: restaurant.tags),
+                    )
+                  ],
+                ),
+              ),
               Container(
                 child: Icon(
                   Icons.arrow_right,
@@ -121,8 +120,8 @@ class RestaurantCard extends StatelessWidget {
             ],
           ),
         ),
-        color: Color.fromRGBO(50, 50, 50, 0.8),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        color: Colors.grey[900],
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(11)),
         margin: EdgeInsets.symmetric(horizontal: 12),
       ),
     );

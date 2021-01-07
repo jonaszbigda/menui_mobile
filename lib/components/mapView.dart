@@ -1,9 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:menui_mobile/settings.dart';
 import '../services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'restaurantView.dart';
+import 'menuiButton.dart';
+import 'orderView.dart';
+import 'favoritesView.dart';
 
 class MapView extends StatefulWidget {
   @override
@@ -13,6 +17,7 @@ class MapView extends StatefulWidget {
 class MapViewState extends State<MapView> {
   Completer<GoogleMapController> _controller = Completer();
   MenuiServices services = new MenuiServices();
+  final MenuiSettings settings = new MenuiSettings();
   Position position;
 
   Future<MarkersAndLocation> createMarkers() async {
@@ -68,15 +73,15 @@ class MapViewState extends State<MapView> {
                         height: 20,
                       ),
                       Container(
-                        decoration: BoxDecoration(color: Colors.grey[850]),
+                        decoration: BoxDecoration(color: Colors.grey[900]),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             RaisedButton(
-                              color: Colors.grey[850],
+                              color: Colors.grey[900],
                               elevation: 0,
-                              padding:
-                              EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 4),
                               onPressed: () {
                                 Navigator.pop(context);
                               },
@@ -90,21 +95,23 @@ class MapViewState extends State<MapView> {
                                   Text(
                                     'Promień',
                                     style: TextStyle(
-                                        color: Colors.grey[200], fontSize: 12),
+                                        color: Colors.grey[200],
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400),
                                   ),
                                   Text(
                                     '600m',
-                                    style:
-                                    TextStyle(color: Colors.grey, fontSize: 10),
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 10),
                                   )
                                 ],
                               ),
                             ),
                             RaisedButton(
-                              color: Colors.grey[850],
+                              color: Colors.grey[900],
                               elevation: 0,
-                              padding:
-                              EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 4),
                               onPressed: () {
                                 Navigator.pop(context);
                               },
@@ -118,21 +125,23 @@ class MapViewState extends State<MapView> {
                                   Text(
                                     'Kuchnia',
                                     style: TextStyle(
-                                        color: Colors.grey[200], fontSize: 12),
+                                        color: Colors.grey[200],
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400),
                                   ),
                                   Text(
                                     'Wszystkie',
-                                    style:
-                                    TextStyle(color: Colors.grey, fontSize: 10),
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 10),
                                   )
                                 ],
                               ),
                             ),
                             RaisedButton(
-                              color: Colors.grey[850],
+                              color: Colors.grey[900],
                               elevation: 0,
-                              padding:
-                              EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 4),
                               onPressed: () {
                                 Navigator.pop(context);
                               },
@@ -146,12 +155,14 @@ class MapViewState extends State<MapView> {
                                   Text(
                                     'Filtry',
                                     style: TextStyle(
-                                        color: Colors.grey[200], fontSize: 12),
+                                        color: Colors.grey[200],
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400),
                                   ),
                                   Text(
                                     'Brak',
-                                    style:
-                                    TextStyle(color: Colors.grey, fontSize: 10),
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 10),
                                   )
                                 ],
                               ),
@@ -160,9 +171,7 @@ class MapViewState extends State<MapView> {
                         ),
                       ),
                       Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey[700]
-                        ),
+                        decoration: BoxDecoration(color: Colors.grey[800]),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -172,7 +181,8 @@ class MapViewState extends State<MapView> {
                             ),
                             Text(
                               'Znaleziono: ${data.markers.length}',
-                              style: TextStyle(color: Colors.white, fontSize: 12),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 12),
                             ),
                           ],
                         ),
@@ -191,88 +201,42 @@ class MapViewState extends State<MapView> {
                   ),
                 ),
                 Container(
-                  decoration: BoxDecoration(color: Colors.grey[850]),
+                  decoration: BoxDecoration(color: Colors.grey[900]),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      RaisedButton(
-                        color: Colors.grey[850],
-                        elevation: 0,
-                        padding: EdgeInsets.all(8),
-                        onPressed: () {},
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Icon(
-                              Icons.home_rounded,
-                              color: Colors.orange,
-                            ),
-                            Text(
-                              'Szukaj',
-                              style: TextStyle(color: Colors.grey[200], fontSize: 12),
-                            )
-                          ],
-                        ),
+                      MenuiButton(
+                        color: Colors.orange,
+                        icon: Icons.home_rounded,
+                        text: "Szukaj",
+                        onPressed: () => Navigator.pop(context),
                       ),
-                      RaisedButton(
-                        color: Colors.grey[850],
-                        elevation: 0,
-                        padding: EdgeInsets.all(8),
-                        onPressed: () {},
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Icon(
-                              Icons.note_rounded,
-                              color: Colors.orange,
-                            ),
-                            Text(
-                              'Zamówienie',
-                              style: TextStyle(color: Colors.grey[200], fontSize: 12),
-                            )
-                          ],
-                        ),
+                      MenuiButton(
+                        color: Colors.orange,
+                        icon: Icons.note_rounded,
+                        text: "Zamównienie",
+                        onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OrderView())),
                       ),
-                      RaisedButton(
-                        color: Colors.grey[850],
-                        elevation: 0,
-                        padding: EdgeInsets.all(8),
-                        onPressed: () {},
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Icon(
-                              Icons.favorite_rounded,
-                              color: Colors.orange,
-                            ),
-                            Text(
-                              'Ulubione',
-                              style: TextStyle(color: Colors.grey[200], fontSize: 12),
-                            )
-                          ],
-                        ),
+                      MenuiButton(
+                        color: Colors.orange,
+                        icon: Icons.favorite_rounded,
+                        text: "Ulubione",
+                        onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FavoritesView())),
                       ),
-                      RaisedButton(
-                        color: Colors.grey[850],
-                        elevation: 0,
-                        padding: EdgeInsets.all(8),
+                      MenuiButton(
+                        color: Colors.orange,
+                        icon: Icons.settings,
+                        text: "Ustawienia",
                         onPressed: () {
-                          //showSettings(context);
+                          showSettings(context, settings);
                         },
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Icon(
-                              Icons.settings,
-                              color: Colors.orange,
-                            ),
-                            Text(
-                              'Ustawienia',
-                              style: TextStyle(color: Colors.grey[200], fontSize: 12),
-                            )
-                          ],
-                        ),
-                      )
+                      ),
                     ],
                   ),
                 ),

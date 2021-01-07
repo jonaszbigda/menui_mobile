@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../settings.dart';
 import 'homeScreen.dart';
 import 'orderView.dart';
+import 'menuiButton.dart';
 
 class FavoritesView extends StatelessWidget {
   final settings = new MenuiSettings();
@@ -16,19 +17,19 @@ class FavoritesView extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Container(
-              decoration: BoxDecoration(color: Colors.grey[850]),
+              decoration: BoxDecoration(color: Colors.grey[900]),
               child: Column(
                 children: [
                   SizedBox(
                     height: 20,
                   ),
                   Container(
-                    decoration: BoxDecoration(color: Colors.grey[850]),
+                    decoration: BoxDecoration(color: Colors.grey[900]),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         RaisedButton(
-                          color: Colors.grey[850],
+                          color: Colors.grey[900],
                           elevation: 0,
                           padding:
                               EdgeInsets.symmetric(vertical: 12, horizontal: 4),
@@ -45,7 +46,9 @@ class FavoritesView extends StatelessWidget {
                               Text(
                                 'Cofnij',
                                 style: TextStyle(
-                                    color: Colors.grey[200], fontSize: 12),
+                                    color: Colors.grey[200],
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400),
                               )
                             ],
                           ),
@@ -64,90 +67,38 @@ class FavoritesView extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
-        decoration: BoxDecoration(color: Colors.grey[850]),
+        decoration: BoxDecoration(color: Colors.grey[900]),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            RaisedButton(
-              color: Colors.grey[850],
-              elevation: 0,
-              padding: EdgeInsets.all(8),
+            MenuiButton(
+              color: Colors.orange,
+              icon: Icons.home_rounded,
+              text: "Szukaj",
               onPressed: () => Navigator.push(
                   context, MaterialPageRoute(builder: (context) => HomePage())),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Icon(
-                    Icons.home_rounded,
-                    color: Colors.orange,
-                  ),
-                  Text(
-                    'Szukaj',
-                    style: TextStyle(color: Colors.grey[200], fontSize: 12),
-                  )
-                ],
-              ),
             ),
-            RaisedButton(
-              color: Colors.grey[850],
-              elevation: 0,
-              padding: EdgeInsets.all(8),
+            MenuiButton(
+              color: Colors.orange,
+              icon: Icons.note_rounded,
+              text: "Zamównienie",
               onPressed: () => Navigator.push(context,
                   MaterialPageRoute(builder: (context) => OrderView())),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Icon(
-                    Icons.note_rounded,
-                    color: Colors.orange,
-                  ),
-                  Text(
-                    'Zamówienie',
-                    style: TextStyle(color: Colors.grey[200], fontSize: 12),
-                  )
-                ],
-              ),
             ),
-            RaisedButton(
-              color: Colors.grey[850],
-              elevation: 0,
-              padding: EdgeInsets.all(8),
+            MenuiButton(
+              color: Colors.orange,
+              icon: Icons.favorite_rounded,
+              text: "Ulubione",
               onPressed: () {},
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Icon(
-                    Icons.favorite_rounded,
-                    color: Colors.orange,
-                  ),
-                  Text(
-                    'Ulubione',
-                    style: TextStyle(color: Colors.grey[200], fontSize: 12),
-                  )
-                ],
-              ),
             ),
-            RaisedButton(
-              color: Colors.grey[850],
-              elevation: 0,
-              padding: EdgeInsets.all(8),
+            MenuiButton(
+              color: Colors.orange,
+              icon: Icons.settings,
+              text: "Ustawienia",
               onPressed: () {
                 showSettings(context, settings);
               },
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Icon(
-                    Icons.settings,
-                    color: Colors.orange,
-                  ),
-                  Text(
-                    'Ustawienia',
-                    style: TextStyle(color: Colors.grey[200], fontSize: 12),
-                  )
-                ],
-              ),
-            )
+            ),
           ],
         ),
       ),

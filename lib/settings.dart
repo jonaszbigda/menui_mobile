@@ -114,9 +114,53 @@ class MenuiSettings {
     final settings = await SharedPreferences.getInstance();
     settings.setStringList('order', new List<String>());
   }
+
+  // ADD TO FAVORITES (OR REMOVE)
+  void addToFavorites(String id) async {
+    final settings = await SharedPreferences.getInstance();
+    if (settings.containsKey('favorites')) {
+      List<String> favorites = settings.getStringList('favorites');
+      if (favorites.contains(id)) {
+        favorites.remove(id);
+        settings.setStringList('favorites', favorites);
+      } else {
+        favorites.add(id);
+        settings.setStringList('favorites', favorites);
+      }
+    } else {
+      List<String> favorites = new List<String>();
+      favorites.add(id);
+      settings.setStringList('favorites', favorites);
+    }
+  }
+
+  // GET FAVORITES
+  Future<List<String>> getFavs() async {
+    final settings = await SharedPreferences.getInstance();
+    if (settings.containsKey('favorites')) {
+      return settings.getStringList('favorites');
+    } else {
+      return [];
+    }
+  }
+
+  // CHECK IF ID IS IN FAVORITES
+  Future<bool> isInFavorites(String id) async {
+    final settings = await SharedPreferences.getInstance();
+    if (settings.containsKey('favorites')) {
+      List<String> favorites = settings.getStringList('favorites');
+      if (favorites.contains(id)) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 }
 
-showSettings(BuildContext context, MenuiSettings settings) async {
+void showSettings(BuildContext context, MenuiSettings settings) async {
   FocusManager.instance.primaryFocus.unfocus();
   final String languageCode = await settings.getLanguage();
   final String language = settings.decodeLanguage(languageCode);

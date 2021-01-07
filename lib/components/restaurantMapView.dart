@@ -1,6 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:menui_mobile/settings.dart';
+import 'orderView.dart';
+import 'favoritesView.dart';
+import 'homeScreen.dart';
+import 'menuiButton.dart';
 
 class RestaurantMapView extends StatefulWidget {
   final List coordinates;
@@ -15,6 +20,7 @@ class RestaurantMapView extends StatefulWidget {
 }
 
 class RestaurantMapViewState extends State<RestaurantMapView> {
+  final MenuiSettings settings = new MenuiSettings();
   Completer<GoogleMapController> _controller = Completer();
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
@@ -43,20 +49,54 @@ class RestaurantMapViewState extends State<RestaurantMapView> {
         },
         markers: Set<Marker>.of(markers.values),
       ),
-      floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: 20),
-        child: FloatingActionButton(
-          backgroundColor: Colors.grey[800],
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Icon(
-            Icons.arrow_back_outlined,
-            color: Colors.orange,
-          ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Container(
+        decoration: BoxDecoration(color: Colors.grey[900]),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            MenuiButton(
+              color: Colors.orange,
+              icon: Icons.home_rounded,
+              text: "Szukaj",
+              onPressed: () => Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => HomePage())),
+            ),
+            MenuiButton(
+              color: Colors.orange,
+              icon: Icons.note_rounded,
+              text: "Zamównienie",
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => OrderView())),
+            ),
+            MenuiButton(
+              color: Colors.orange,
+              icon: Icons.favorite_rounded,
+              text: "Ulubione",
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => FavoritesView())),
+            ),
+            MenuiButton(
+              color: Colors.orange,
+              icon: Icons.settings,
+              text: "Ustawienia",
+              onPressed: () {
+                showSettings(context, settings);
+              },
+            ),
+          ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
+      appBar: AppBar(
+        backgroundColor: Colors.grey[900],
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios_rounded,
+            color: Colors.orange,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
     );
   }
 }

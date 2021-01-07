@@ -338,6 +338,15 @@ class Restaurant {
       this.lunchHours,
       this.lunchMenu,
       this.dishes});
+
+  Restaurant.empty(
+      {this.adress = "",
+      this.city = "",
+      this.coordinates = const [],
+      this.id = "",
+      this.imgUrl = "",
+      this.name = "",
+      this.type = ""});
 }
 
 class Dish {

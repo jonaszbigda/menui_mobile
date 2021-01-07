@@ -8,30 +8,36 @@ import 'orderView.dart';
 import 'favoritesView.dart';
 import '../settings.dart';
 import 'homeScreen.dart';
+import 'package:share/share.dart';
+import 'favoriteButton.dart';
+import 'menuiButton.dart';
 
-class RestaurantView extends StatelessWidget {
+class RestaurantView extends StatefulWidget {
   final String id;
+
+  RestaurantView({@required this.id, Key key}) : super(key: key);
+
+  _RestaurantViewState createState() => _RestaurantViewState();
+}
+
+class _RestaurantViewState extends State<RestaurantView> {
   final MenuiServices services = new MenuiServices();
   final MenuiSettings settings = new MenuiSettings();
-
-  RestaurantView({@required this.id});
+  Restaurant restaurant = new Restaurant.empty();
 
   @override
   Widget build(BuildContext context) {
-    services.fetchAllDishes(id);
     List<String> categories = [];
-    Restaurant restaurant;
-    return Scaffold(
-      body: Container(
-          decoration: BoxDecoration(color: Colors.grey[850]),
-          child: FutureBuilder<Restaurant>(
-            future: services.fetchRestaurant(id),
-            builder:
-                (BuildContext context, AsyncSnapshot<Restaurant> snapshot) {
-              if (snapshot.hasData) {
-                restaurant = snapshot.data;
-                categories = restaurant.categories;
-                return ListView(
+    return FutureBuilder<Restaurant>(
+        future: services.fetchRestaurant(widget.id),
+        builder: (BuildContext context, AsyncSnapshot<Restaurant> snapshot) {
+          if (snapshot.hasData) {
+            restaurant = snapshot.data;
+            categories = restaurant.categories;
+            return Scaffold(
+              body: Container(
+                decoration: BoxDecoration(color: Colors.grey[850]),
+                child: ListView(
                   children: [
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -55,7 +61,7 @@ class RestaurantView extends StatelessWidget {
                                   Container(
                                     padding: EdgeInsets.all(12),
                                     decoration: BoxDecoration(
-                                        color: Colors.grey[850],
+                                        color: Colors.grey[900],
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(8))),
                                     child: Column(
@@ -171,204 +177,130 @@ class RestaurantView extends StatelessWidget {
                       ],
                     )
                   ],
-                );
-              } else {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            },
-          )),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Container(
-        decoration: BoxDecoration(color: Colors.grey[850]),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            RaisedButton(
-              color: Colors.grey[850],
-              elevation: 0,
-              padding: EdgeInsets.all(8),
-              onPressed: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => HomePage())),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Icon(
-                    Icons.home_rounded,
-                    color: Colors.orange,
-                  ),
-                  Text(
-                    'Szukaj',
-                    style: TextStyle(
-                        color: Colors.grey[200],
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400),
-                  )
-                ],
-              ),
-            ),
-            RaisedButton(
-              color: Colors.grey[850],
-              elevation: 0,
-              padding: EdgeInsets.all(8),
-              onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => OrderView())),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Icon(
-                    Icons.note_rounded,
-                    color: Colors.orange,
-                  ),
-                  Text(
-                    'Zamówienie',
-                    style: TextStyle(
-                        color: Colors.grey[200],
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400),
-                  )
-                ],
-              ),
-            ),
-            RaisedButton(
-              color: Colors.grey[850],
-              elevation: 0,
-              padding: EdgeInsets.all(8),
-              onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => FavoritesView())),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Icon(
-                    Icons.favorite_rounded,
-                    color: Colors.orange,
-                  ),
-                  Text(
-                    'Ulubione',
-                    style: TextStyle(
-                        color: Colors.grey[200],
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400),
-                  )
-                ],
-              ),
-            ),
-            RaisedButton(
-              color: Colors.grey[850],
-              elevation: 0,
-              padding: EdgeInsets.all(8),
-              onPressed: () {
-                showSettings(context, settings);
-              },
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Icon(
-                    Icons.settings,
-                    color: Colors.orange,
-                  ),
-                  Text(
-                    'Ustawienia',
-                    style: TextStyle(
-                        color: Colors.grey[200],
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-      appBar: AppBar(
-        backgroundColor: Colors.grey[850],
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_rounded,
-            color: Colors.orange,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-        actions: [
-          RaisedButton(
-            color: Colors.grey[850],
-            elevation: 0,
-            padding: EdgeInsets.all(8),
-            onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => RestaurantMapView(
-                          coordinates: restaurant.coordinates,
-                          name: restaurant.name,
-                          type: restaurant.type,
-                        ))),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Icon(
-                  Icons.map_rounded,
-                  color: Colors.orange,
                 ),
-                Text(
-                  'Mapa',
-                  style: TextStyle(
-                      color: Colors.grey[200],
-                      fontSize: 10,
-                      fontWeight: FontWeight.w400),
-                )
-              ],
-            ),
-          ),
-          RaisedButton(
-            color: Colors.grey[850],
-            elevation: 0,
-            padding: EdgeInsets.all(8),
-            onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => OrderView())),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Icon(
-                  Icons.share_rounded,
-                  color: Colors.orange,
+              ),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+              floatingActionButton: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 4),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        RaisedButton.icon(
+                          splashColor: Colors.orange,
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25)),
+                          color: Colors.grey[900],
+                          icon: Icon(
+                            Icons.keyboard_arrow_up_rounded,
+                            color: Colors.orange,
+                          ),
+                          label: Text(
+                            "Karta dań",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onPressed: () =>
+                              showMenu(context, restaurant.categories),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(color: Colors.grey[900]),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        MenuiButton(
+                          color: Colors.orange,
+                          icon: Icons.home_rounded,
+                          text: "Szukaj",
+                          onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage())),
+                        ),
+                        MenuiButton(
+                          color: Colors.orange,
+                          icon: Icons.note_rounded,
+                          text: "Zamównienie",
+                          onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => OrderView())),
+                        ),
+                        MenuiButton(
+                          color: Colors.orange,
+                          icon: Icons.favorite_rounded,
+                          text: "Ulubione",
+                          onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => FavoritesView())),
+                        ),
+                        MenuiButton(
+                          color: Colors.orange,
+                          icon: Icons.settings,
+                          text: "Ustawienia",
+                          onPressed: () {
+                            showSettings(context, settings);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              appBar: AppBar(
+                backgroundColor: Colors.grey[900],
+                leading: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back_ios_rounded,
+                    color: Colors.orange,
+                  ),
+                  onPressed: () => Navigator.pop(context),
                 ),
-                Text(
-                  'Udostępnij',
-                  style: TextStyle(
-                      color: Colors.grey[200],
-                      fontSize: 10,
-                      fontWeight: FontWeight.w400),
-                )
-              ],
-            ),
-          ),
-          RaisedButton(
-            color: Colors.grey[850],
-            elevation: 0,
-            padding: EdgeInsets.all(8),
-            onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => OrderView())),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Icon(
-                  Icons.favorite_rounded,
-                  color: Colors.orange,
-                ),
-                Text(
-                  'Dodaj',
-                  style: TextStyle(
-                      color: Colors.grey[200],
-                      fontSize: 10,
-                      fontWeight: FontWeight.w400),
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+                actions: [
+                  MenuiButton(
+                    color: Colors.grey,
+                    icon: Icons.map_rounded,
+                    text: "Mapa",
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RestaurantMapView(
+                                  coordinates: restaurant.coordinates,
+                                  name: restaurant.name,
+                                  type: restaurant.type,
+                                ))),
+                  ),
+                  MenuiButton(
+                    color: Colors.grey,
+                    icon: Icons.share_rounded,
+                    text: "Udostępnij",
+                    onPressed: () => Share.share(
+                        'https://www.menui.pl/restaurant/${restaurant.id}',
+                        subject: '${restaurant.name}'),
+                  ),
+                  FavoriteButton(
+                    id: restaurant.id,
+                  )
+                ],
+              ),
+            );
+          } else {
+            return Scaffold(
+                body: Container(
+              decoration: BoxDecoration(color: Colors.grey[850]),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ));
+          }
+        });
   }
 
   showMenu(BuildContext context, List<String> categories) {
@@ -380,7 +312,7 @@ class RestaurantView extends StatelessWidget {
           builder: (BuildContext context) {
             return DishList(
               categories: categories,
-              id: id,
+              id: widget.id,
             );
           });
     }
@@ -456,7 +388,7 @@ class WorkingHoursDay extends StatelessWidget {
           Divider(
             height: 4,
             thickness: 1,
-            color: Colors.grey[850],
+            color: Colors.white,
           ),
           SizedBox(
             height: 4,

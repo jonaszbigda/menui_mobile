@@ -2,9 +2,15 @@ import '../services.dart';
 import 'package:flutter/material.dart';
 import 'package:menui_mobile/components/restaurantCard.dart';
 import 'searchBar.dart';
+import 'menuiButton.dart';
+import 'homeScreen.dart';
+import 'orderView.dart';
+import 'favoritesView.dart';
+import '../settings.dart';
 
 class SearchResults extends StatelessWidget {
   final List<Restaurant> restaurants;
+  final MenuiSettings settings = new MenuiSettings();
 
   SearchResults({@required this.restaurants});
 
@@ -51,88 +57,39 @@ class SearchResults extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
-        decoration: BoxDecoration(color: Colors.grey[850]),
+        decoration: BoxDecoration(color: Colors.grey[900]),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            RaisedButton(
-              color: Colors.grey[850],
-              elevation: 0,
-              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+            MenuiButton(
+              color: Colors.orange,
+              icon: Icons.home_rounded,
+              text: "Szukaj",
+              onPressed: () => Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => HomePage())),
+            ),
+            MenuiButton(
+              color: Colors.orange,
+              icon: Icons.note_rounded,
+              text: "Zamównienie",
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => OrderView())),
+            ),
+            MenuiButton(
+              color: Colors.orange,
+              icon: Icons.favorite_rounded,
+              text: "Ulubione",
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => FavoritesView())),
+            ),
+            MenuiButton(
+              color: Colors.orange,
+              icon: Icons.settings,
+              text: "Ustawienia",
               onPressed: () {
-                Navigator.pop(context);
+                showSettings(context, settings);
               },
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Icon(
-                    Icons.home_rounded,
-                    color: Colors.orange,
-                  ),
-                  Text(
-                    'Szukaj',
-                    style: TextStyle(color: Colors.grey[200], fontSize: 12),
-                  )
-                ],
-              ),
             ),
-            RaisedButton(
-              color: Colors.grey[850],
-              elevation: 0,
-              padding: EdgeInsets.all(8),
-              onPressed: () {},
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Icon(
-                    Icons.note_rounded,
-                    color: Colors.orange,
-                  ),
-                  Text(
-                    'Zamówienie',
-                    style: TextStyle(color: Colors.grey[200], fontSize: 12),
-                  )
-                ],
-              ),
-            ),
-            RaisedButton(
-              color: Colors.grey[850],
-              elevation: 0,
-              padding: EdgeInsets.all(8),
-              onPressed: () {},
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Icon(
-                    Icons.favorite_rounded,
-                    color: Colors.orange,
-                  ),
-                  Text(
-                    'Ulubione',
-                    style: TextStyle(color: Colors.grey[200], fontSize: 12),
-                  )
-                ],
-              ),
-            ),
-            RaisedButton(
-              color: Colors.grey[850],
-              elevation: 0,
-              padding: EdgeInsets.all(8),
-              onPressed: () {},
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Icon(
-                    Icons.settings,
-                    color: Colors.orange,
-                  ),
-                  Text(
-                    'Ustawienia',
-                    style: TextStyle(color: Colors.grey[200], fontSize: 12),
-                  )
-                ],
-              ),
-            )
           ],
         ),
       ),
