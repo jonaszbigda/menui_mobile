@@ -24,7 +24,7 @@ class HomePage extends StatelessWidget {
                 "img/logo_orange.png",
                 width: 160,
               ),
-              MenuiSearchBar(),
+              MenuiSearchBar(''),
               Text(
                 'lub',
                 style: TextStyle(color: Colors.grey[500]),

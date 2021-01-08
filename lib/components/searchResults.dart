@@ -8,12 +8,20 @@ import 'orderView.dart';
 import 'favoritesView.dart';
 import '../settings.dart';
 
-class SearchResults extends StatelessWidget {
+class SearchResults extends StatefulWidget {
+  SearchResults(
+      {Key key, @required this.initialText, @required this.restaurants})
+      : super(key: key);
+
+  final String initialText;
   final List<Restaurant> restaurants;
   final MenuiSettings settings = new MenuiSettings();
 
-  SearchResults({@required this.restaurants});
+  @override
+  _SearchResultsState createState() => _SearchResultsState();
+}
 
+class _SearchResultsState extends State<SearchResults> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,38 +29,32 @@ class SearchResults extends StatelessWidget {
         decoration: BoxDecoration(
             image: DecorationImage(
                 image: AssetImage("img/bg_tile.jpg"), fit: BoxFit.cover)),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(
-                height: 30,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(color: Colors.grey[850]),
+              child: Column(
+                children: [
+                  Container(
+                      decoration: BoxDecoration(color: Colors.grey[900]),
+                      child: MenuiSearchBar(widget.initialText)),
+                ],
               ),
-              Image.asset(
-                "img/logo_orange.png",
-                width: 60,
-              ),
-              MenuiSearchBar(),
-              Row(children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(left: 12),
-                  child: Text(
-                    'Znaleziono: ${restaurants.length}',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                )
-              ]),
-              Expanded(
-                  child: ListView.builder(
-                itemCount: restaurants.length,
-                itemBuilder: (context, index) {
-                  return RestaurantCard(
-                    restaurant: restaurants[index],
-                  );
-                },
-              ))
-            ],
-          ),
+            ),
+            SizedBox(
+              height: 12,
+            ),
+            Expanded(
+                child: ListView.builder(
+              itemCount: widget.restaurants.length,
+              itemBuilder: (context, index) {
+                return RestaurantCard(
+                  restaurant: widget.restaurants[index],
+                );
+              },
+            ))
+          ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -87,11 +89,34 @@ class SearchResults extends StatelessWidget {
               icon: Icons.settings,
               text: "Ustawienia",
               onPressed: () {
-                showSettings(context, settings);
+                showSettings(context, widget.settings);
               },
             ),
           ],
         ),
+      ),
+      appBar: AppBar(
+        title: Text(
+          'Znaleziono: ${widget.restaurants.length}',
+          style: TextStyle(
+              color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
+        ),
+        backgroundColor: Colors.grey[900],
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios_rounded,
+            color: Colors.orange,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+        actions: [
+          MenuiButton(
+            color: Colors.grey,
+            icon: Icons.filter_alt_rounded,
+            text: "Filtruj",
+            onPressed: () {},
+          ),
+        ],
       ),
     );
   }

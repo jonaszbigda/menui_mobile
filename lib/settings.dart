@@ -138,8 +138,10 @@ class MenuiSettings {
   Future<List<String>> getFavs() async {
     final settings = await SharedPreferences.getInstance();
     if (settings.containsKey('favorites')) {
-      return settings.getStringList('favorites');
+      final List<String> result = settings.getStringList('favorites');
+      return result;
     } else {
+      print('Favorites Empty');
       return [];
     }
   }

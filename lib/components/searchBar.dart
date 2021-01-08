@@ -3,6 +3,10 @@ import '../services.dart';
 import 'searchResults.dart';
 
 class MenuiSearchBar extends StatefulWidget {
+  final String initialValue;
+
+  MenuiSearchBar(this.initialValue);
+
   @override
   MenuiSearchBarState createState() {
     return MenuiSearchBarState();
@@ -23,6 +27,7 @@ class MenuiSearchBarState extends State<MenuiSearchBar> {
   @override
   void initState() {
     super.initState();
+    _controller.text = widget.initialValue;
     _controller.addListener(fetchAutocomplete);
   }
 
@@ -55,7 +60,10 @@ class MenuiSearchBarState extends State<MenuiSearchBar> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => SearchResults(restaurants: results)));
+            builder: (context) => SearchResults(
+                  restaurants: results,
+                  initialText: _controller.text,
+                )));
   }
 
   void hideSuggestions() {
@@ -151,10 +159,11 @@ class MenuiSearchBarState extends State<MenuiSearchBar> {
           child: Column(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.all(12),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                 child: TextFormField(
                   controller: _controller,
-                  style: TextStyle(color: Colors.orange),
+                  style: TextStyle(color: Colors.orange, fontSize: 14),
                   decoration: InputDecoration(
                       hintStyle: TextStyle(color: Colors.grey),
                       enabledBorder: OutlineInputBorder(
