@@ -114,9 +114,20 @@ class _SearchResultsState extends State<SearchResults> {
             color: Colors.grey,
             icon: Icons.filter_alt_rounded,
             text: "Filtruj",
-            onPressed: () {},
+            onPressed: () => ScaffoldState().openDrawer(),
           ),
         ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(color: Colors.grey[850]),
+              child: Text('Filtry'),
+            )
+          ],
+        ),
       ),
     );
   }
