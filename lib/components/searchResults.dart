@@ -22,9 +22,12 @@ class SearchResults extends StatefulWidget {
 }
 
 class _SearchResultsState extends State<SearchResults> {
+  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _drawerKey,
       body: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -114,7 +117,9 @@ class _SearchResultsState extends State<SearchResults> {
             color: Colors.grey,
             icon: Icons.filter_alt_rounded,
             text: "Filtruj",
-            onPressed: () => ScaffoldState().openDrawer(),
+            onPressed: () {
+              _drawerKey.currentState.openDrawer();
+            },
           ),
         ],
       ),
@@ -124,7 +129,13 @@ class _SearchResultsState extends State<SearchResults> {
           children: [
             DrawerHeader(
               decoration: BoxDecoration(color: Colors.grey[850]),
-              child: Text('Filtry'),
+              child: Text(
+                'Filtry',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.orange),
+              ),
             )
           ],
         ),
