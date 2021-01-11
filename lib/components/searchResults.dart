@@ -7,6 +7,7 @@ import 'homeScreen.dart';
 import 'orderView.dart';
 import 'favoritesView.dart';
 import '../settings.dart';
+import 'filters.dart';
 
 class SearchResults extends StatefulWidget {
   SearchResults(
@@ -27,6 +28,7 @@ class _SearchResultsState extends State<SearchResults>
   bool expand;
   AnimationController animationController;
   Animation<double> animation;
+  Filters filters = new Filters();
 
   void prepareAnimations() {
     animationController =
@@ -36,26 +38,15 @@ class _SearchResultsState extends State<SearchResults>
   }
 
   void checkExpand() {
-    print('Check Expand');
     if (expand) {
       animationController.forward();
-      print('Open');
     } else {
       animationController.reverse();
-      print('Close');
     }
   }
 
   @override
-  void didUpdateWidget(SearchResults oldWidget) {
-    print('Widget Did Update');
-    super.didUpdateWidget(oldWidget);
-    checkExpand();
-  }
-
-  @override
   void initState() {
-    print("Init State");
     super.initState();
     expand = false;
     prepareAnimations();
@@ -70,6 +61,7 @@ class _SearchResultsState extends State<SearchResults>
 
   @override
   Widget build(BuildContext context) {
+    checkExpand();
     return Scaffold(
       key: _drawerKey,
       body: Container(
@@ -80,12 +72,80 @@ class _SearchResultsState extends State<SearchResults>
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             SizeTransition(
-              sizeFactor: animation,
-              child: Container(
-                decoration: BoxDecoration(color: Colors.blue),
-                child: Text("Dupa"),
-              ),
-            ),
+                sizeFactor: animation,
+                child: RestaurantFilters(
+                  filters: filters,
+                  onSelectType: (value) {
+                    if (filters.selectedTypes.contains(value)) {
+                      final List<String> result =
+                          List.from(filters.selectedTypes);
+                      result.remove(value);
+                      setState(() {
+                        filters.selectedTypes = result;
+                      });
+                    } else {
+                      final List<String> result =
+                          List.from(filters.selectedTypes);
+                      result.add(value);
+                      setState(() {
+                        filters.selectedTypes = result;
+                      });
+                    }
+                  },
+                  onSelectTag: (tag) {
+                    switch (tag) {
+                      case Tags.alcohol:
+                        {
+                          setState(() {
+                            filters.alcohol = !filters.alcohol;
+                          });
+                        }
+                        break;
+                      case Tags.cardPayments:
+                        {
+                          setState(() {
+                            filters.cardPayments = !filters.cardPayments;
+                          });
+                        }
+                        break;
+                      case Tags.delivery:
+                        {
+                          setState(() {
+                            filters.delivery = !filters.delivery;
+                          });
+                        }
+                        break;
+                      case Tags.glutenFree:
+                        {
+                          setState(() {
+                            filters.glutenFree = !filters.glutenFree;
+                          });
+                        }
+                        break;
+                      case Tags.petFriendly:
+                        {
+                          setState(() {
+                            filters.petFriendly = !filters.petFriendly;
+                          });
+                        }
+                        break;
+                      case Tags.vegan:
+                        {
+                          setState(() {
+                            filters.vegan = !filters.vegan;
+                          });
+                        }
+                        break;
+                      case Tags.vegetarian:
+                        {
+                          setState(() {
+                            filters.vegetarian = !filters.vegetarian;
+                          });
+                        }
+                        break;
+                    }
+                  },
+                )),
             Container(
               decoration: BoxDecoration(color: Colors.grey[850]),
               child: Column(
