@@ -77,6 +77,30 @@ class MapViewState extends State<MapView> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  RaisedButton(
+                                    color: Colors.grey[900],
+                                    elevation: 0,
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 12, horizontal: 4),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.arrow_back_ios_rounded,
+                                          color: Colors.orange,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                             RaisedButton(
                               color: Colors.grey[900],
                               elevation: 0,

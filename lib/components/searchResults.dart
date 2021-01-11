@@ -21,8 +21,52 @@ class SearchResults extends StatefulWidget {
   _SearchResultsState createState() => _SearchResultsState();
 }
 
-class _SearchResultsState extends State<SearchResults> {
+class _SearchResultsState extends State<SearchResults>
+    with SingleTickerProviderStateMixin {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  bool expand;
+  AnimationController animationController;
+  Animation<double> animation;
+
+  void prepareAnimations() {
+    animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    animation = CurvedAnimation(
+        parent: animationController, curve: Curves.fastOutSlowIn);
+  }
+
+  void checkExpand() {
+    print('Check Expand');
+    if (expand) {
+      animationController.forward();
+      print('Open');
+    } else {
+      animationController.reverse();
+      print('Close');
+    }
+  }
+
+  @override
+  void didUpdateWidget(SearchResults oldWidget) {
+    print('Widget Did Update');
+    super.didUpdateWidget(oldWidget);
+    checkExpand();
+  }
+
+  @override
+  void initState() {
+    print("Init State");
+    super.initState();
+    expand = false;
+    prepareAnimations();
+    checkExpand();
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +79,13 @@ class _SearchResultsState extends State<SearchResults> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
+            SizeTransition(
+              sizeFactor: animation,
+              child: Container(
+                decoration: BoxDecoration(color: Colors.blue),
+                child: Text("Dupa"),
+              ),
+            ),
             Container(
               decoration: BoxDecoration(color: Colors.grey[850]),
               child: Column(
@@ -118,7 +169,9 @@ class _SearchResultsState extends State<SearchResults> {
             icon: Icons.filter_alt_rounded,
             text: "Filtruj",
             onPressed: () {
-              _drawerKey.currentState.openDrawer();
+              setState(() {
+                expand = !expand;
+              });
             },
           ),
         ],
