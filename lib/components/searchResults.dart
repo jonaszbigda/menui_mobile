@@ -24,7 +24,6 @@ class SearchResults extends StatefulWidget {
 
 class _SearchResultsState extends State<SearchResults>
     with SingleTickerProviderStateMixin {
-  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   bool expand;
   AnimationController animationController;
   Animation<double> animation;
@@ -62,8 +61,9 @@ class _SearchResultsState extends State<SearchResults>
   @override
   Widget build(BuildContext context) {
     checkExpand();
+    List<Restaurant> filteredRestaurants =
+        filters.filterRestaurants(widget.restaurants, filters);
     return Scaffold(
-      key: _drawerKey,
       body: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -93,57 +93,15 @@ class _SearchResultsState extends State<SearchResults>
                     }
                   },
                   onSelectTag: (tag) {
-                    switch (tag) {
-                      case Tags.alcohol:
-                        {
-                          setState(() {
-                            filters.alcohol = !filters.alcohol;
-                          });
-                        }
-                        break;
-                      case Tags.cardPayments:
-                        {
-                          setState(() {
-                            filters.cardPayments = !filters.cardPayments;
-                          });
-                        }
-                        break;
-                      case Tags.delivery:
-                        {
-                          setState(() {
-                            filters.delivery = !filters.delivery;
-                          });
-                        }
-                        break;
-                      case Tags.glutenFree:
-                        {
-                          setState(() {
-                            filters.glutenFree = !filters.glutenFree;
-                          });
-                        }
-                        break;
-                      case Tags.petFriendly:
-                        {
-                          setState(() {
-                            filters.petFriendly = !filters.petFriendly;
-                          });
-                        }
-                        break;
-                      case Tags.vegan:
-                        {
-                          setState(() {
-                            filters.vegan = !filters.vegan;
-                          });
-                        }
-                        break;
-                      case Tags.vegetarian:
-                        {
-                          setState(() {
-                            filters.vegetarian = !filters.vegetarian;
-                          });
-                        }
-                        break;
+                    List<Tags> result = List<Tags>.from(filters.tags);
+                    if (filters.tags.contains(tag)) {
+                      result.remove(tag);
+                    } else {
+                      result.add(tag);
                     }
+                    setState(() {
+                      filters.tags = result;
+                    });
                   },
                 )),
             Container(
@@ -161,10 +119,10 @@ class _SearchResultsState extends State<SearchResults>
             ),
             Expanded(
                 child: ListView.builder(
-              itemCount: widget.restaurants.length,
+              itemCount: filteredRestaurants.length,
               itemBuilder: (context, index) {
                 return RestaurantCard(
-                  restaurant: widget.restaurants[index],
+                  restaurant: filteredRestaurants[index],
                 );
               },
             ))
@@ -211,7 +169,7 @@ class _SearchResultsState extends State<SearchResults>
       ),
       appBar: AppBar(
         title: Text(
-          'Znaleziono: ${widget.restaurants.length}',
+          'Znaleziono: ${filteredRestaurants.length}',
           style: TextStyle(
               color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
         ),
@@ -235,23 +193,6 @@ class _SearchResultsState extends State<SearchResults>
             },
           ),
         ],
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(color: Colors.grey[850]),
-              child: Text(
-                'Filtry',
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.orange),
-              ),
-            )
-          ],
-        ),
       ),
     );
   }

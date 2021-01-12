@@ -43,7 +43,10 @@ class _FavoritesViewState extends State<FavoritesView> {
                     },
                   );
                 } else {
-                  return null;
+                  return Container(
+                    width: 0,
+                    height: 0,
+                  );
                 }
               },
             )),

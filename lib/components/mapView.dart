@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:menui_mobile/components/filters.dart';
 import 'package:menui_mobile/settings.dart';
 import '../services.dart';
 import 'package:geolocator/geolocator.dart';
@@ -14,19 +15,54 @@ class MapView extends StatefulWidget {
   State<MapView> createState() => MapViewState();
 }
 
-class MapViewState extends State<MapView> {
+class MapViewState extends State<MapView> with SingleTickerProviderStateMixin {
+  Filters filters = new Filters();
   Completer<GoogleMapController> _controller = Completer();
+  bool expand;
+  AnimationController animationController;
+  Animation<double> animation;
   MenuiServices services = new MenuiServices();
   final MenuiSettings settings = new MenuiSettings();
   Position position;
+
+  void prepareAnimations() {
+    animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    animation = CurvedAnimation(
+        parent: animationController, curve: Curves.fastOutSlowIn);
+  }
+
+  void checkExpand() {
+    if (expand) {
+      animationController.forward();
+    } else {
+      animationController.reverse();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    expand = false;
+    prepareAnimations();
+    checkExpand();
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
 
   Future<MarkersAndLocation> createMarkers() async {
     Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     LatLng location = new LatLng(position.latitude, position.longitude);
-    List<Restaurant> restaurants = await services.fetchRestaurantsByLocation(
-        position.latitude, position.longitude);
+    List<Restaurant> fetchedRestaurants = await services
+        .fetchRestaurantsByLocation(position.latitude, position.longitude);
+    List<Restaurant> restaurants =
+        filters.filterRestaurants(fetchedRestaurants, filters);
     if (restaurants.isNotEmpty) {
       for (Restaurant thisRestaurant in restaurants) {
         final MarkerId markerId = MarkerId(thisRestaurant.name);
@@ -51,6 +87,7 @@ class MapViewState extends State<MapView> {
 
   @override
   Widget build(BuildContext context) {
+    checkExpand();
     return Scaffold(
       body: FutureBuilder<MarkersAndLocation>(
         future: createMarkers(),
@@ -107,7 +144,10 @@ class MapViewState extends State<MapView> {
                               padding: EdgeInsets.symmetric(
                                   vertical: 12, horizontal: 4),
                               onPressed: () {
-                                Navigator.pop(context);
+                                showRadiusSelectionDialog(context, settings,
+                                    () {
+                                  setState(() {});
+                                });
                               },
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -120,13 +160,22 @@ class MapViewState extends State<MapView> {
                                     'Promień',
                                     style: TextStyle(
                                         color: Colors.grey[200],
-                                        fontSize: 12,
+                                        fontSize: 11,
                                         fontWeight: FontWeight.w400),
                                   ),
-                                  Text(
-                                    '600m',
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 10),
+                                  FutureBuilder(
+                                    future: settings.getRadius(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        return Text(
+                                          '${snapshot.data}m',
+                                          style: TextStyle(
+                                              color: Colors.grey, fontSize: 10),
+                                        );
+                                      } else {
+                                        return null;
+                                      }
+                                    },
                                   )
                                 ],
                               ),
@@ -137,37 +186,9 @@ class MapViewState extends State<MapView> {
                               padding: EdgeInsets.symmetric(
                                   vertical: 12, horizontal: 4),
                               onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Icon(
-                                    Icons.map_rounded,
-                                    color: Colors.orange,
-                                  ),
-                                  Text(
-                                    'Kuchnia',
-                                    style: TextStyle(
-                                        color: Colors.grey[200],
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                  Text(
-                                    'Wszystkie',
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 10),
-                                  )
-                                ],
-                              ),
-                            ),
-                            RaisedButton(
-                              color: Colors.grey[900],
-                              elevation: 0,
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 12, horizontal: 4),
-                              onPressed: () {
-                                Navigator.pop(context);
+                                setState(() {
+                                  expand = !expand;
+                                });
                               },
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -180,18 +201,47 @@ class MapViewState extends State<MapView> {
                                     'Filtry',
                                     style: TextStyle(
                                         color: Colors.grey[200],
-                                        fontSize: 12,
+                                        fontSize: 11,
                                         fontWeight: FontWeight.w400),
                                   ),
-                                  Text(
-                                    'Brak',
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 10),
-                                  )
                                 ],
                               ),
                             ),
                           ],
+                        ),
+                      ),
+                      SizeTransition(
+                        sizeFactor: animation,
+                        child: RestaurantFilters(
+                          filters: filters,
+                          onSelectType: (value) {
+                            if (filters.selectedTypes.contains(value)) {
+                              final List<String> result =
+                                  List.from(filters.selectedTypes);
+                              result.remove(value);
+                              setState(() {
+                                filters.selectedTypes = result;
+                              });
+                            } else {
+                              final List<String> result =
+                                  List.from(filters.selectedTypes);
+                              result.add(value);
+                              setState(() {
+                                filters.selectedTypes = result;
+                              });
+                            }
+                          },
+                          onSelectTag: (tag) {
+                            List<Tags> result = List<Tags>.from(filters.tags);
+                            if (filters.tags.contains(tag)) {
+                              result.remove(tag);
+                            } else {
+                              result.add(tag);
+                            }
+                            setState(() {
+                              filters.tags = result;
+                            });
+                          },
                         ),
                       ),
                       Container(

@@ -13,10 +13,22 @@ class DishView extends StatelessWidget {
   final Dish dish;
   DishView({@required this.dish});
   final MenuiSettings settings = new MenuiSettings();
+  final SnackBar snackbarAdded = new SnackBar(
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+    backgroundColor: Colors.orange,
+    duration: Duration(seconds: 2),
+    behavior: SnackBarBehavior.floating,
+    content: Text(
+      "Dodano do zamówienia :)",
+      style: TextStyle(color: Colors.grey[850]),
+    ),
+  );
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: Container(
           decoration: BoxDecoration(color: Colors.grey[850]),
           child: ListView(
@@ -260,11 +272,260 @@ class DishView extends StatelessWidget {
             icon: Icons.note_add_rounded,
             text: "Do zamówienia",
             onPressed: () {
-              settings.addToOrder(dish.id);
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AddToOrderDialog(
+                      dish: dish,
+                      onSubmit: () {
+                        _scaffoldKey.currentState.showSnackBar(snackbarAdded);
+                        Navigator.pop(context);
+                      },
+                    );
+                  });
             },
           ),
         ],
       ),
+    );
+  }
+}
+
+class AddToOrderDialog extends StatefulWidget {
+  final Dish dish;
+  final Function onSubmit;
+  final MenuiSettings settings = new MenuiSettings();
+
+  AddToOrderDialog({@required this.dish, @required this.onSubmit});
+
+  @override
+  State<AddToOrderDialog> createState() => AddToOrderDialogState();
+}
+
+class AddToOrderDialogState extends State<AddToOrderDialog> {
+  int quantity = 1;
+  String price;
+  String priceName;
+  int selectedVariant = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    price = widget.dish.prices.price1.price;
+    priceName = widget.dish.prices.price1.priceName;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleDialog(
+      title: Text(
+        'Dodaj do zamówienia',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+        textAlign: TextAlign.center,
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      backgroundColor: Colors.grey[850],
+      children: [
+        Text(
+          'Ilość',
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.grey),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(
+              iconSize: 16,
+              icon: Icon(
+                Icons.remove,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                if (quantity > 1) {
+                  setState(() {
+                    quantity = quantity - 1;
+                  });
+                }
+              },
+            ),
+            Text(
+              "$quantity",
+              style: TextStyle(color: Colors.orange, fontSize: 16),
+            ),
+            IconButton(
+              iconSize: 16,
+              icon: Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                setState(() {
+                  quantity = quantity + 1;
+                });
+              },
+            )
+          ],
+        ),
+        if (widget.dish.prices.price1.priceName != "")
+          Padding(
+            padding: EdgeInsets.only(bottom: 8),
+            child: Text(
+              'Wariant',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey),
+            ),
+          ),
+        if (widget.dish.prices.price1.priceName != "")
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(4),
+                child: ButtonTheme(
+                  minWidth: 20,
+                  child: RaisedButton(
+                    onPressed: () {
+                      setState(() {
+                        selectedVariant = 1;
+                        price = widget.dish.prices.price1.price;
+                        priceName = widget.dish.prices.price1.priceName;
+                      });
+                    },
+                    color: (() {
+                      if (selectedVariant == 1) {
+                        return Colors.grey[600];
+                      } else {
+                        return Colors.grey[800];
+                      }
+                    }()),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14)),
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 12, horizontal: 2),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              '(${widget.dish.prices.price1.priceName})',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 11),
+                            ),
+                            Text(
+                              '${widget.dish.prices.price1.price} zł',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 14),
+                            ),
+                          ]),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(4),
+                child: ButtonTheme(
+                  minWidth: 20,
+                  child: RaisedButton(
+                    onPressed: () {
+                      setState(() {
+                        selectedVariant = 2;
+                        price = widget.dish.prices.price2.price;
+                        priceName = widget.dish.prices.price2.priceName;
+                      });
+                    },
+                    color: (() {
+                      if (selectedVariant == 2) {
+                        return Colors.grey[600];
+                      } else {
+                        return Colors.grey[800];
+                      }
+                    }()),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14)),
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 12, horizontal: 2),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              '(${widget.dish.prices.price2.priceName})',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 11),
+                            ),
+                            Text(
+                              '${widget.dish.prices.price2.price} zł',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 14),
+                            ),
+                          ]),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(4),
+                child: ButtonTheme(
+                  minWidth: 20,
+                  child: RaisedButton(
+                    onPressed: () {
+                      setState(() {
+                        selectedVariant = 3;
+                        price = widget.dish.prices.price3.price;
+                        priceName = widget.dish.prices.price3.priceName;
+                      });
+                    },
+                    color: (() {
+                      if (selectedVariant == 3) {
+                        return Colors.grey[600];
+                      } else {
+                        return Colors.grey[800];
+                      }
+                    }()),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14)),
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 12, horizontal: 2),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              '(${widget.dish.prices.price3.priceName})',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 11),
+                            ),
+                            Text(
+                              '${widget.dish.prices.price3.price} zł',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 14),
+                            ),
+                          ]),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        Padding(
+          padding: EdgeInsets.only(top: 12),
+          child: Center(
+            child: RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14)),
+              onPressed: () {
+                widget.settings.addToOrder(new OrderItem(
+                    id: widget.dish.id,
+                    quantity: quantity,
+                    price: price,
+                    priceName: priceName));
+                widget.onSubmit();
+              },
+              child: Text('Dodaj'),
+            ),
+          ),
+        )
+      ],
     );
   }
 }

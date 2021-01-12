@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:menui_mobile/services.dart';
 
 enum Tags {
   cardPayments,
@@ -11,13 +12,7 @@ enum Tags {
 }
 
 class Filters {
-  bool cardPayments = false;
-  bool petFriendly = false;
-  bool glutenFree = false;
-  bool vegan = false;
-  bool vegetarian = false;
-  bool alcohol = false;
-  bool delivery = false;
+  List<Tags> tags = [];
   bool onlyOpen = false;
   List<String> selectedTypes = [];
   final List<String> availableTypes = [
@@ -43,6 +38,41 @@ class Filters {
     'mieszane',
     'inna'
   ];
+
+  List<Restaurant> filterByTypes(
+      List<Restaurant> restaurants, List<String> types) {
+    if (types.isEmpty) {
+      return restaurants;
+    } else {
+      List<Restaurant> result = restaurants.where((restaurant) {
+        return types.contains(restaurant.type);
+      }).toList();
+      return result;
+    }
+  }
+
+  List<Restaurant> filterByTags(List<Restaurant> restaurants, Filters filters) {
+    if (filters.tags.isEmpty) {
+      return restaurants;
+    } else {
+      List<Restaurant> result = [];
+      restaurants.forEach((restaurant) => {
+            if (filters.tags.every((tag) {
+              return restaurant.tags.contains(tag);
+            }))
+              {result.add(restaurant)}
+          });
+      return result;
+    }
+  }
+
+  List<Restaurant> filterRestaurants(
+      List<Restaurant> restaurants, Filters filters) {
+    List<Restaurant> result = [];
+    result = filterByTypes(restaurants, filters.selectedTypes);
+    result = filterByTags(result, filters);
+    return result;
+  }
 }
 
 class RestaurantFilters extends StatelessWidget {
@@ -112,45 +142,52 @@ class RestaurantFilters extends StatelessWidget {
             children: [
               RestaurantTag(
                 name: "Płatność kartą",
-                active: filters.cardPayments,
                 img: 'img/i_card_black.png',
                 onTapped: () => onSelectTag(Tags.cardPayments),
+                filters: filters,
+                filterTag: Tags.cardPayments,
               ),
               RestaurantTag(
                 name: "Lubimy zwierzaki",
-                active: filters.petFriendly,
                 img: 'img/i_pets_black.png',
                 onTapped: () => onSelectTag(Tags.petFriendly),
+                filters: filters,
+                filterTag: Tags.petFriendly,
               ),
               RestaurantTag(
                 name: "Bez glutenu",
-                active: filters.glutenFree,
                 img: 'img/i_glutenFree_black.png',
                 onTapped: () => onSelectTag(Tags.glutenFree),
+                filters: filters,
+                filterTag: Tags.glutenFree,
               ),
               RestaurantTag(
                 name: "Wegańskie",
-                active: filters.vegan,
                 img: 'img/i_vegan_black.png',
                 onTapped: () => onSelectTag(Tags.vegan),
+                filters: filters,
+                filterTag: Tags.vegan,
               ),
               RestaurantTag(
                 name: "Wegetariańskie",
-                active: filters.vegetarian,
                 img: 'img/i_vegetarian_black.png',
                 onTapped: () => onSelectTag(Tags.vegetarian),
+                filters: filters,
+                filterTag: Tags.vegetarian,
               ),
               RestaurantTag(
                 name: "Alkohol",
-                active: filters.alcohol,
                 img: 'img/i_alcohol_black.png',
                 onTapped: () => onSelectTag(Tags.alcohol),
+                filters: filters,
+                filterTag: Tags.alcohol,
               ),
               RestaurantTag(
                 name: "Dowozimy",
-                active: filters.delivery,
                 img: 'img/i_delivery_black.png',
                 onTapped: () => onSelectTag(Tags.delivery),
+                filters: filters,
+                filterTag: Tags.delivery,
               ),
             ],
           )
@@ -163,13 +200,20 @@ class RestaurantFilters extends StatelessWidget {
 class RestaurantTag extends StatelessWidget {
   final String name;
   final String img;
-  final bool active;
   final Function onTapped;
+  final Filters filters;
+  final Tags filterTag;
 
-  RestaurantTag({this.name, this.active, this.img, this.onTapped});
+  RestaurantTag(
+      {this.name, this.img, this.onTapped, this.filters, this.filterTag});
 
   @override
   Widget build(BuildContext context) {
+    bool active = false;
+    if (filters.tags.contains(filterTag)) {
+      active = true;
+    }
+
     return ButtonTheme(
       height: 26,
       minWidth: 60,

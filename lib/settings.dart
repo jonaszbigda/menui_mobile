@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
@@ -86,33 +88,70 @@ class MenuiSettings {
     }
   }
 
-  // ADD DISH TO ORDER --- TODO
-  void addToOrder(String id) async {
+  // DECODE ORDER
+  List<OrderItem> decodeOrder(String orderJson) {
+    print(orderJson);
+    final List decoded = jsonDecode(orderJson);
+    List<OrderItem> order = [];
+    decoded.forEach((item) => {
+          order.add(new OrderItem(
+              id: item['id'],
+              quantity: item['quantity'],
+              price: item['price'],
+              priceName: item['priceName']))
+        });
+    return order;
+  }
+
+  // ENCODE ORDER
+  String encodeOrder(List<OrderItem> order) {
+    return jsonEncode(order);
+  }
+
+  // ADD DISH TO ORDER
+  void addToOrder(OrderItem item) async {
     final settings = await SharedPreferences.getInstance();
     if (settings.containsKey('order')) {
-      List<String> order = settings.getStringList('order');
-      order.add(id);
+      String rawOrder = settings.getString('order');
+      List<OrderItem> order = decodeOrder(rawOrder);
+      order.add(item);
+      String encodedOrder = encodeOrder(order);
+      settings.setString('order', encodedOrder);
     } else {
-      final List<String> order = new List<String>();
-      order.add(id);
+      final List<OrderItem> order = new List<OrderItem>();
+      order.add(item);
+      String encodedOrder = encodeOrder(order);
+      settings.setString('order', encodedOrder);
     }
   }
 
+  // REMOVE FROM ORDER
+  void removeFromOrder(int index) async {
+    final settings = await SharedPreferences.getInstance();
+    String rawOrder = settings.getString('order');
+    List<OrderItem> order = decodeOrder(rawOrder);
+    order.removeAt(index);
+    String encodedOrder = encodeOrder(order);
+    settings.setString('order', encodedOrder);
+  }
+
   // GET ORDER
-  Future<List<String>> getOrder() async {
+  Future<List<OrderItem>> getOrder() async {
     final settings = await SharedPreferences.getInstance();
     if (settings.containsKey('order')) {
-      List<String> order = settings.getStringList('order');
+      String rawOrder = settings.getString('order');
+      List<OrderItem> order = decodeOrder(rawOrder);
       return order;
     } else {
-      return new List<String>();
+      return new List<OrderItem>();
     }
   }
 
   // CLEAR ORDER
   void clearOrder() async {
     final settings = await SharedPreferences.getInstance();
-    settings.setStringList('order', new List<String>());
+    String cleanOrder = encodeOrder(new List<OrderItem>());
+    settings.setString('order', cleanOrder);
   }
 
   // ADD TO FAVORITES (OR REMOVE)
@@ -211,7 +250,7 @@ void showSettings(BuildContext context, MenuiSettings settings) async {
                 ),
                 onTap: () {
                   Navigator.pop(context);
-                  showRadiusSelectionDialog(context, settings);
+                  showRadiusSelectionDialog(context, settings, () {});
                 }),
             ListTile(
                 title: Text(
@@ -390,13 +429,14 @@ void showAppInfoDialog(BuildContext context) async {
 // SELECT RADIUS
 
 void showRadiusSelectionDialog(
-    BuildContext context, MenuiSettings settings) async {
+    BuildContext context, MenuiSettings settings, Function onSaved) async {
   final int currentRadius = await settings.getRadius();
   showDialog(
       context: context,
       builder: (BuildContext context) {
         return RadiusSlider(
           initialValue: currentRadius.toDouble(),
+          onSaved: onSaved,
         );
       });
 }
@@ -411,7 +451,9 @@ Color getOptionColor(targetOption, thisOption) {
 
 class RadiusSlider extends StatefulWidget {
   final double initialValue;
-  RadiusSlider({Key key, @required this.initialValue}) : super(key: key);
+  final Function onSaved;
+  RadiusSlider({Key key, @required this.initialValue, this.onSaved})
+      : super(key: key);
 
   @override
   _RadiusSliderState createState() =>
@@ -449,6 +491,9 @@ class _RadiusSliderState extends State<RadiusSlider> {
           onPressed: () async {
             final MenuiSettings settings = new MenuiSettings();
             settings.setRadius(sliderValue.toInt());
+            if (widget.onSaved != null) {
+              widget.onSaved();
+            }
             Navigator.pop(context);
           },
           child: const Text(
@@ -468,5 +513,23 @@ class _RadiusSliderState extends State<RadiusSlider> {
     } else {
       return '${distance}m';
     }
+  }
+}
+
+class OrderItem {
+  final int quantity;
+  final String price;
+  final String priceName;
+  final String id;
+
+  OrderItem({this.id, this.price, this.priceName, this.quantity});
+
+  Map<String, dynamic> toJson() {
+    return {
+      "quantity": quantity,
+      "price": price,
+      "priceName": priceName,
+      "id": id
+    };
   }
 }

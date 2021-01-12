@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../services.dart';
+import 'filters.dart';
 
 class LineOfIconsSmall extends StatelessWidget {
-  final MenuiTags tags;
+  final List<Tags> tags;
 
   LineOfIconsSmall({@required this.tags});
 
@@ -12,7 +12,7 @@ class LineOfIconsSmall extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        if (tags.alcohol == true)
+        if (tags.contains(Tags.alcohol))
           Container(
               margin: EdgeInsets.only(top: 4, bottom: 4, right: 9),
               child: Column(
@@ -27,7 +27,7 @@ class LineOfIconsSmall extends StatelessWidget {
                   ),
                 ],
               )),
-        if (tags.cardPayments == true)
+        if (tags.contains(Tags.cardPayments))
           Container(
               margin: EdgeInsets.only(top: 4, bottom: 4, right: 9),
               child: Column(
@@ -42,7 +42,7 @@ class LineOfIconsSmall extends StatelessWidget {
                   ),
                 ],
               )),
-        if (tags.delivery == true)
+        if (tags.contains(Tags.delivery))
           Container(
               margin: EdgeInsets.only(top: 4, bottom: 4, right: 9),
               child: Column(
@@ -57,7 +57,7 @@ class LineOfIconsSmall extends StatelessWidget {
                   ),
                 ],
               )),
-        if (tags.glutenFree == true)
+        if (tags.contains(Tags.glutenFree))
           Container(
               margin: EdgeInsets.only(top: 4, bottom: 4, right: 9),
               child: Column(
@@ -72,7 +72,7 @@ class LineOfIconsSmall extends StatelessWidget {
                   ),
                 ],
               )),
-        if (tags.petFriendly == true)
+        if (tags.contains(Tags.petFriendly))
           Container(
               margin: EdgeInsets.only(top: 4, bottom: 4, right: 9),
               child: Column(
@@ -87,7 +87,7 @@ class LineOfIconsSmall extends StatelessWidget {
                   ),
                 ],
               )),
-        if (tags.vegan == true)
+        if (tags.contains(Tags.vegan))
           Container(
               margin: EdgeInsets.only(top: 4, bottom: 4, right: 9),
               child: Column(
@@ -102,7 +102,7 @@ class LineOfIconsSmall extends StatelessWidget {
                   ),
                 ],
               )),
-        if (tags.vegetarian == true)
+        if (tags.contains(Tags.vegetarian))
           Container(
               margin: EdgeInsets.only(top: 4, bottom: 4, right: 9),
               child: Column(

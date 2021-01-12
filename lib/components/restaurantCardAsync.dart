@@ -128,7 +128,10 @@ class RestaurantCardAsync extends StatelessWidget {
                   ));
             } else {
               return Center(
-                child: CircularProgressIndicator(),
+                child: Padding(
+                  padding: EdgeInsets.all(24),
+                  child: CircularProgressIndicator(),
+                ),
               );
             }
           },

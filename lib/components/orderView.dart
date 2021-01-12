@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:menui_mobile/components/dishCardAsync.dart';
 import '../settings.dart';
 import 'homeScreen.dart';
 import 'favoritesView.dart';
 import 'menuiButton.dart';
 
-class OrderView extends StatelessWidget {
+class OrderView extends StatefulWidget {
   final settings = new MenuiSettings();
 
+  @override
+  State<OrderView> createState() => OrderViewState();
+}
+
+class OrderViewState extends State<OrderView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,21 +22,46 @@ class OrderView extends StatelessWidget {
                   image: AssetImage("img/bg_tile.jpg"), fit: BoxFit.cover)),
           child: Column(
             children: <Widget>[
-              Container(
-                decoration: BoxDecoration(color: Colors.grey[800]),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.attach_money_rounded,
-                      color: Colors.orange,
-                    ),
-                    Text(
-                      'Suma: 0zł',
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                  ],
-                ),
+              FutureBuilder(
+                future: widget.settings.getOrder(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<OrderItem> order = snapshot.data;
+                    if (order.isNotEmpty) {
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: order.length,
+                          itemBuilder: (context, index) {
+                            return DishCardAsync(
+                              item: order[index],
+                              index: index,
+                              onRemoved: () {
+                                setState(() {});
+                              },
+                            );
+                          },
+                        ),
+                      );
+                    } else {
+                      return Container(
+                        child: Center(
+                            child: Padding(
+                          padding: EdgeInsets.only(top: 50),
+                          child: Text(
+                            "Zamówienie jest puste.",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        )),
+                      );
+                    }
+                  } else {
+                    return Container(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+                },
               )
             ],
           ),
@@ -66,7 +97,7 @@ class OrderView extends StatelessWidget {
                 icon: Icons.settings,
                 text: "Ustawienia",
                 onPressed: () {
-                  showSettings(context, settings);
+                  showSettings(context, widget.settings);
                 },
               ),
             ],
@@ -75,8 +106,7 @@ class OrderView extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             'Zamówienie',
-            style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w400, fontSize: 14),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
           ),
           backgroundColor: Colors.grey[900],
           leading: IconButton(
@@ -90,7 +120,8 @@ class OrderView extends StatelessWidget {
             MenuiButton(
               color: Colors.orange,
               onPressed: () {
-                settings.clearOrder();
+                widget.settings.clearOrder();
+                setState(() {});
               },
               text: "Wyczyść",
               icon: Icons.delete_forever_rounded,

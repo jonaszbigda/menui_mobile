@@ -27,13 +27,11 @@ class _RestaurantViewState extends State<RestaurantView> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> categories = [];
     return FutureBuilder<Restaurant>(
         future: services.fetchRestaurant(widget.id),
         builder: (BuildContext context, AsyncSnapshot<Restaurant> snapshot) {
           if (snapshot.hasData) {
             restaurant = snapshot.data;
-            categories = restaurant.categories;
             return Scaffold(
               body: Container(
                 decoration: BoxDecoration(color: Colors.grey[850]),

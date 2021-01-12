@@ -26,6 +26,14 @@ class DishCard extends StatelessWidget {
                   width: 80,
                   height: 80,
                   fit: BoxFit.cover,
+                  errorBuilder: (BuildContext context, Object exception,
+                      StackTrace stackTrace) {
+                    return Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(color: Colors.grey[900]),
+                    );
+                  },
                 ),
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(12),
@@ -41,11 +49,15 @@ class DishCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      dish.name,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: TextStyle(color: Colors.orange[600], fontSize: 15),
+                    Expanded(
+                      flex: 0,
+                      child: Text(
+                        dish.name,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style:
+                            TextStyle(color: Colors.orange[600], fontSize: 15),
+                      ),
                     ),
                     Text(
                       dish.weight,
@@ -55,7 +67,9 @@ class DishCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                Prices(prices: dish.prices)
+                Expanded(
+                  child: Prices(prices: dish.prices),
+                )
               ],
             )),
             Container(
@@ -85,21 +99,25 @@ class Prices extends StatelessWidget {
         if (prices.price1.priceName == "")
           Text(
             '${prices.price1.price} zł',
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(color: Colors.white, fontSize: 14),
           ),
         if (prices.price1.priceName != "")
           Text(
             '${prices.price1.priceName}: ${prices.price1.price} zł',
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(color: Colors.white, fontSize: 14),
           ),
         if (prices.price2.priceName != "")
           Text(
             '${prices.price2.priceName}: ${prices.price2.price} zł',
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(color: Colors.white, fontSize: 14),
           ),
         if (prices.price3.priceName != "")
           Text(
             '${prices.price3.priceName}: ${prices.price3.price} zł',
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(color: Colors.white, fontSize: 14),
           ),
       ],

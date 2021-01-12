@@ -3,6 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import './settings.dart';
+import './components/filters.dart';
 
 class MenuiServices {
   final String backendURL = 'https://api.menui.pl/';
@@ -29,11 +30,39 @@ class MenuiServices {
     final response = await http.get('${backendURL}dish?dishId=$id');
     if (response.statusCode == 200 || response.statusCode == 304) {
       final decoded = jsonDecode(response.body);
+      final thisAllergens = decoded['allergens'];
+      final thisPrices = decoded['prices'];
+      final thisPrice1 = thisPrices['price1'];
+      final thisPrice2 = thisPrices['price2'];
+      final thisPrice3 = thisPrices['price3'];
       final result = new Dish(
           id: decoded['_id'],
           restaurantId: decoded['restaurantId'],
           name: decoded['name'],
-          category: decoded['category']);
+          category: decoded['category'],
+          prices: new MenuiPrices(
+              price1:
+                  new MenuiPrice(thisPrice1['priceName'], thisPrice1['price']),
+              price2:
+                  new MenuiPrice(thisPrice2['priceName'], thisPrice2['price']),
+              price3:
+                  new MenuiPrice(thisPrice3['priceName'], thisPrice3['price'])),
+          notes: decoded['notes'],
+          imgUrl: decoded['imgUrl'],
+          weight: decoded['weight'],
+          ingredients: decoded['ingredients'],
+          vegetarian: decoded['vegetarian'],
+          vegan: decoded['vegan'],
+          glicemicIndex: decoded['glicemicIndex'],
+          kCal: decoded['kCal'],
+          allergens: new MenuiAllergens(
+              thisAllergens['gluten'],
+              thisAllergens['lactose'],
+              thisAllergens['soy'],
+              thisAllergens['eggs'],
+              thisAllergens['seaFood'],
+              thisAllergens['peanuts'],
+              thisAllergens['sesame']));
       return result;
     } else {
       throw "Nie udało się pobrać";
@@ -87,6 +116,8 @@ class MenuiServices {
         }
       }
       return dishes;
+    } else {
+      return List<Dish>();
     }
   }
 
@@ -131,18 +162,13 @@ class MenuiServices {
           links: new MenuiLinks(
               links['facebook'], links['instagram'], links['www']),
           categories: categories,
-          tags: new MenuiTags(
-              tags['cardPayments'],
-              tags['petFriendly'],
-              tags['glutenFree'],
-              tags['vegan'],
-              tags['vegetarian'],
-              tags['alcohol'],
-              tags['delivery']),
+          tags: decodeTags(tags),
           lunchHours: decoded['lunchHours'],
           lunchMenu: lunchMenu,
           dishes: decoded['dishes']);
       return result;
+    } else {
+      return null;
     }
   }
 
@@ -186,14 +212,7 @@ class MenuiServices {
                 workingHours['sb'],
                 workingHours['nd']),
             description: restaurant['description'],
-            tags: new MenuiTags(
-                tags['cardPayments'],
-                tags['petFriendly'],
-                tags['glutenFree'],
-                tags['vegan'],
-                tags['vegetarian'],
-                tags['alcohol'],
-                tags['delivery']),
+            tags: decodeTags(tags),
             lunchHours: restaurant['lunchHours'],
             lunchMenu: lunchMenu,
             dishes: restaurant['dishes']);
@@ -242,14 +261,7 @@ class MenuiServices {
                 workingHours['sb'],
                 workingHours['nd']),
             description: restaurant['description'],
-            tags: new MenuiTags(
-                tags['cardPayments'],
-                tags['petFriendly'],
-                tags['glutenFree'],
-                tags['vegan'],
-                tags['vegetarian'],
-                tags['alcohol'],
-                tags['delivery']),
+            tags: decodeTags(tags),
             lunchHours: restaurant['lunchHours'],
             lunchMenu: lunchMenu,
             dishes: restaurant['dishes']);
@@ -297,6 +309,18 @@ class MenuiServices {
       return hours;
     }
   }
+
+  List<Tags> decodeTags(dynamic tags) {
+    List<Tags> result = [];
+    if (tags['cardPayments']) result.add(Tags.cardPayments);
+    if (tags['petFriendly']) result.add(Tags.petFriendly);
+    if (tags['glutenFree']) result.add(Tags.glutenFree);
+    if (tags['vegan']) result.add(Tags.vegan);
+    if (tags['vegetarian']) result.add(Tags.vegetarian);
+    if (tags['alcohol']) result.add(Tags.alcohol);
+    if (tags['delivery']) result.add(Tags.delivery);
+    return result;
+  }
 }
 
 // DATA TYPES
@@ -312,7 +336,7 @@ class Restaurant {
   String imgUrl;
   MenuiWorkingHours workingHours;
   String description;
-  MenuiTags tags;
+  List<Tags> tags;
   MenuiLinks links;
   String phone;
   List<String> categories;
@@ -448,19 +472,6 @@ class MenuiLinks {
   String www;
 
   MenuiLinks(this.facebook, this.instagram, this.www);
-}
-
-class MenuiTags {
-  bool cardPayments;
-  bool petFriendly;
-  bool glutenFree;
-  bool vegan;
-  bool vegetarian;
-  bool alcohol;
-  bool delivery;
-
-  MenuiTags(this.cardPayments, this.petFriendly, this.glutenFree, this.vegan,
-      this.vegetarian, this.alcohol, this.delivery);
 }
 
 class MenuiWorkingHours {
