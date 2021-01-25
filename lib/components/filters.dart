@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:menui_mobile/services.dart';
+import 'package:menui_mobile/localizations.dart';
 
 enum Tags {
   cardPayments,
@@ -96,7 +97,7 @@ class RestaurantFilters extends StatelessWidget {
           Padding(
             padding: EdgeInsets.all(8),
             child: Text(
-              'Rodzaj kuchni',
+              AppLocalizations.instance.text('typeOfFood'),
               style: TextStyle(color: Colors.orange),
             ),
           ),
@@ -132,7 +133,7 @@ class RestaurantFilters extends StatelessWidget {
           Padding(
             padding: EdgeInsets.all(8),
             child: Text(
-              'Tagi',
+              AppLocalizations.instance.text('tags'),
               style: TextStyle(color: Colors.orange),
             ),
           ),
@@ -141,49 +142,49 @@ class RestaurantFilters extends StatelessWidget {
             runSpacing: -12,
             children: [
               RestaurantTag(
-                name: "Płatność kartą",
+                name: AppLocalizations.instance.text('cardPayments'),
                 img: 'img/i_card_black.png',
                 onTapped: () => onSelectTag(Tags.cardPayments),
                 filters: filters,
                 filterTag: Tags.cardPayments,
               ),
               RestaurantTag(
-                name: "Lubimy zwierzaki",
+                name: AppLocalizations.instance.text('pets'),
                 img: 'img/i_pets_black.png',
                 onTapped: () => onSelectTag(Tags.petFriendly),
                 filters: filters,
                 filterTag: Tags.petFriendly,
               ),
               RestaurantTag(
-                name: "Bez glutenu",
+                name: AppLocalizations.instance.text('glutenFree'),
                 img: 'img/i_glutenFree_black.png',
                 onTapped: () => onSelectTag(Tags.glutenFree),
                 filters: filters,
                 filterTag: Tags.glutenFree,
               ),
               RestaurantTag(
-                name: "Wegańskie",
+                name: AppLocalizations.instance.text('vegan'),
                 img: 'img/i_vegan_black.png',
                 onTapped: () => onSelectTag(Tags.vegan),
                 filters: filters,
                 filterTag: Tags.vegan,
               ),
               RestaurantTag(
-                name: "Wegetariańskie",
+                name: AppLocalizations.instance.text('vegetarian'),
                 img: 'img/i_vegetarian_black.png',
                 onTapped: () => onSelectTag(Tags.vegetarian),
                 filters: filters,
                 filterTag: Tags.vegetarian,
               ),
               RestaurantTag(
-                name: "Alkohol",
+                name: AppLocalizations.instance.text('alcohol'),
                 img: 'img/i_alcohol_black.png',
                 onTapped: () => onSelectTag(Tags.alcohol),
                 filters: filters,
                 filterTag: Tags.alcohol,
               ),
               RestaurantTag(
-                name: "Dowozimy",
+                name: AppLocalizations.instance.text('delivery'),
                 img: 'img/i_delivery_black.png',
                 onTapped: () => onSelectTag(Tags.delivery),
                 filters: filters,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'filters.dart';
+import 'package:menui_mobile/localizations.dart';
 
 class LineOfIcons extends StatelessWidget {
   final List<Tags> tags;
@@ -32,7 +33,7 @@ class LineOfIcons extends StatelessWidget {
                     height: 26,
                   ),
                   Text(
-                    'Alkohol',
+                    AppLocalizations.instance.text('alcohol'),
                     style:
                         TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
@@ -54,12 +55,12 @@ class LineOfIcons extends StatelessWidget {
                     height: 26,
                   ),
                   Text(
-                    'Płatność',
+                    AppLocalizations.instance.text('cardPayments1'),
                     style:
                         TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   ),
                   Text(
-                    'kartą',
+                    AppLocalizations.instance.text('cardPayments2'),
                     style:
                         TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
@@ -80,7 +81,7 @@ class LineOfIcons extends StatelessWidget {
                     height: 26,
                   ),
                   Text(
-                    'Dowozimy',
+                    AppLocalizations.instance.text('delivery'),
                     style:
                         TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
@@ -101,7 +102,7 @@ class LineOfIcons extends StatelessWidget {
                     height: 26,
                   ),
                   Text(
-                    'Bezglutenowe',
+                    AppLocalizations.instance.text('glutenFree'),
                     style:
                         TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
@@ -122,12 +123,12 @@ class LineOfIcons extends StatelessWidget {
                     height: 26,
                   ),
                   Text(
-                    'Lubimy',
+                    AppLocalizations.instance.text('pets1'),
                     style:
                         TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   ),
                   Text(
-                    'zwierzaczki',
+                    AppLocalizations.instance.text('pets2'),
                     style:
                         TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
@@ -148,7 +149,7 @@ class LineOfIcons extends StatelessWidget {
                     height: 26,
                   ),
                   Text(
-                    'Wegańskie',
+                    AppLocalizations.instance.text('vegan'),
                     style:
                         TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
@@ -169,7 +170,7 @@ class LineOfIcons extends StatelessWidget {
                     height: 26,
                   ),
                   Text(
-                    'Wegetariańskie',
+                    AppLocalizations.instance.text('vegetarian'),
                     style:
                         TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )

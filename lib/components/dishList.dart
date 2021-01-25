@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services.dart';
 import 'dishCard.dart';
+import 'package:menui_mobile/localizations.dart';
 
 class DishList extends StatelessWidget {
   final String id;
@@ -68,14 +69,14 @@ class DishList extends StatelessWidget {
                 elevation: 5,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25)),
-                color: Colors.grey[900],
+                color: Colors.orange,
                 icon: Icon(
                   Icons.keyboard_arrow_down_rounded,
-                  color: Colors.orange,
+                  color: Colors.grey[900],
                 ),
                 label: Text(
-                  "Zwiń",
-                  style: TextStyle(color: Colors.white),
+                  AppLocalizations.instance.text("hideDishes"),
+                  style: TextStyle(color: Colors.grey[900]),
                 ),
                 onPressed: () => Navigator.pop(context),
               )))

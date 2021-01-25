@@ -8,6 +8,7 @@ import '../settings.dart';
 import 'homeScreen.dart';
 import 'package:share/share.dart';
 import 'menuiButton.dart';
+import 'package:menui_mobile/localizations.dart';
 
 class DishView extends StatelessWidget {
   final Dish dish;
@@ -19,7 +20,7 @@ class DishView extends StatelessWidget {
     duration: Duration(seconds: 2),
     behavior: SnackBarBehavior.floating,
     content: Text(
-      "Dodano do zamówienia :)",
+      AppLocalizations.instance.text("addedToOrder"),
       style: TextStyle(color: Colors.grey[850]),
     ),
   );
@@ -86,7 +87,7 @@ class DishView extends StatelessWidget {
                   if (dish.allergens.hasAllergens()) SizedBox(height: 8),
                   if (dish.allergens.hasAllergens())
                     Text(
-                      'Może zawierać',
+                      AppLocalizations.instance.text("mayContain"),
                       style: TextStyle(color: Colors.orange, fontSize: 14),
                     ),
                   Allergens(allergens: dish.allergens),
@@ -110,7 +111,7 @@ class DishView extends StatelessWidget {
                     height: 6,
                   ),
                   Text(
-                    'Składniki',
+                    AppLocalizations.instance.text("ingredients"),
                     style: TextStyle(color: Colors.orange, fontSize: 14),
                   ),
                   SizedBox(
@@ -139,7 +140,7 @@ class DishView extends StatelessWidget {
                     children: <Widget>[
                       IconChip(
                           icon: Icons.battery_charging_full,
-                          leading: "Wartość energetyczna",
+                          leading: AppLocalizations.instance.text("energy"),
                           value: (() {
                             if (dish.kCal != "") {
                               return dish.kCal + " kcal";
@@ -149,7 +150,8 @@ class DishView extends StatelessWidget {
                           }())),
                       IconChip(
                           icon: Icons.cake,
-                          leading: "Indeks glikemiczny",
+                          leading:
+                              AppLocalizations.instance.text("glicemicIndex"),
                           value: dish.glicemicIndex),
                     ],
                   ),
@@ -158,7 +160,7 @@ class DishView extends StatelessWidget {
                   ),
                   if (dish.notes != "")
                     Text(
-                      'Uwagi',
+                      AppLocalizations.instance.text("notes"),
                       style: TextStyle(color: Colors.orange, fontSize: 14),
                     ),
                   SizedBox(
@@ -181,7 +183,7 @@ class DishView extends StatelessWidget {
                           width: 6,
                         ),
                         Text(
-                          'Danie wegańskie',
+                          AppLocalizations.instance.text("dishVegan"),
                           style:
                               TextStyle(color: Colors.grey[200], fontSize: 12),
                         ),
@@ -199,17 +201,17 @@ class DishView extends StatelessWidget {
                           width: 6,
                         ),
                         Text(
-                          'Danie wegetariańskie',
+                          AppLocalizations.instance.text("dishVegetarian"),
                           style:
                               TextStyle(color: Colors.grey[200], fontSize: 12),
                         ),
                       ],
                     ),
+                  SizedBox(
+                    height: 120,
+                  )
                 ],
               ),
-              SizedBox(
-                height: 28,
-              )
             ],
           )),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -221,28 +223,28 @@ class DishView extends StatelessWidget {
             MenuiButton(
               color: Colors.orange,
               icon: Icons.home_rounded,
-              text: "Szukaj",
+              text: AppLocalizations.instance.text("search"),
               onPressed: () => Navigator.push(
                   context, MaterialPageRoute(builder: (context) => HomePage())),
             ),
             MenuiButton(
               color: Colors.orange,
               icon: Icons.note_rounded,
-              text: "Zamównienie",
+              text: AppLocalizations.instance.text("order"),
               onPressed: () => Navigator.push(context,
                   MaterialPageRoute(builder: (context) => OrderView())),
             ),
             MenuiButton(
               color: Colors.orange,
               icon: Icons.favorite_rounded,
-              text: "Ulubione",
+              text: AppLocalizations.instance.text("favorites"),
               onPressed: () => Navigator.push(context,
                   MaterialPageRoute(builder: (context) => FavoritesView())),
             ),
             MenuiButton(
               color: Colors.orange,
               icon: Icons.settings,
-              text: "Ustawienia",
+              text: AppLocalizations.instance.text("settings"),
               onPressed: () {
                 showSettings(context, settings);
               },
@@ -263,14 +265,14 @@ class DishView extends StatelessWidget {
           MenuiButton(
             color: Colors.grey,
             icon: Icons.share_rounded,
-            text: "Udostępnij",
+            text: AppLocalizations.instance.text("share"),
             onPressed: () => Share.share('https://www.menui.pl/dish/${dish.id}',
                 subject: '${dish.name}'),
           ),
           MenuiButton(
             color: Colors.grey,
             icon: Icons.note_add_rounded,
-            text: "Do zamówienia",
+            text: AppLocalizations.instance.text("addToOrder"),
             onPressed: () {
               showDialog(
                   context: context,
@@ -319,7 +321,7 @@ class AddToOrderDialogState extends State<AddToOrderDialog> {
   Widget build(BuildContext context) {
     return SimpleDialog(
       title: Text(
-        'Dodaj do zamówienia',
+        AppLocalizations.instance.text("addToOrder"),
         style: TextStyle(color: Colors.white, fontSize: 16),
         textAlign: TextAlign.center,
       ),
@@ -327,7 +329,7 @@ class AddToOrderDialogState extends State<AddToOrderDialog> {
       backgroundColor: Colors.grey[850],
       children: [
         Text(
-          'Ilość',
+          AppLocalizations.instance.text("quantity"),
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.grey),
         ),
@@ -370,7 +372,7 @@ class AddToOrderDialogState extends State<AddToOrderDialog> {
           Padding(
             padding: EdgeInsets.only(bottom: 8),
             child: Text(
-              'Wariant',
+              AppLocalizations.instance.text("variant"),
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.grey),
             ),
@@ -521,7 +523,9 @@ class AddToOrderDialogState extends State<AddToOrderDialog> {
                     priceName: priceName));
                 widget.onSubmit();
               },
-              child: Text('Dodaj'),
+              child: Text(
+                AppLocalizations.instance.text("add"),
+              ),
             ),
           ),
         )

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services.dart';
 import 'searchResults.dart';
+import 'package:menui_mobile/localizations.dart';
 
 class MenuiSearchBar extends StatefulWidget {
   final String initialValue;
@@ -82,7 +83,7 @@ class MenuiSearchBarState extends State<MenuiSearchBar> {
 
     return OverlayEntry(
         builder: (context) => GestureDetector(
-            behavior: HitTestBehavior.translucent,
+            behavior: HitTestBehavior.opaque,
             onTap: () {
               FocusScopeNode currentFocus = FocusScope.of(context);
               if (!currentFocus.hasPrimaryFocus) {
@@ -162,22 +163,28 @@ class MenuiSearchBarState extends State<MenuiSearchBar> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                 child: TextFormField(
+                  onFieldSubmitted: (text) => searchRestaurantsByString(),
                   controller: _controller,
                   style: TextStyle(color: Colors.orange, fontSize: 14),
                   decoration: InputDecoration(
-                      hintStyle: TextStyle(color: Colors.grey),
+                      filled: true,
+                      fillColor: Colors.grey[900],
+                      hintStyle: TextStyle(color: Colors.grey[200]),
                       enabledBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.grey, width: 1.0),
+                              BorderSide(color: Colors.grey[900], width: 1.0),
                           borderRadius: BorderRadius.circular(16)),
                       focusedBorder: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.orange, width: 2.0),
                           borderRadius: BorderRadius.circular(20)),
-                      hintText: 'Wyszukaj miasto lub nazwę restauracji.',
-                      suffixIcon: Icon(
-                        Icons.search,
-                        color: Colors.orange,
+                      hintText: AppLocalizations.instance.text('searchbar'),
+                      suffixIcon: IconButton(
+                        onPressed: () => searchRestaurantsByString(),
+                        icon: Icon(
+                          Icons.search,
+                          color: Colors.orange,
+                        ),
                       )),
                   validator: (value) {
                     if (value.isEmpty) {

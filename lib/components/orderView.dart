@@ -4,6 +4,7 @@ import '../settings.dart';
 import 'homeScreen.dart';
 import 'favoritesView.dart';
 import 'menuiButton.dart';
+import 'package:menui_mobile/localizations.dart';
 
 class OrderView extends StatefulWidget {
   final settings = new MenuiSettings();
@@ -19,7 +20,7 @@ class OrderViewState extends State<OrderView> {
         body: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("img/bg_tile.jpg"), fit: BoxFit.cover)),
+                  image: AssetImage("img/bg.png"), fit: BoxFit.cover)),
           child: Column(
             children: <Widget>[
               FutureBuilder(
@@ -48,7 +49,7 @@ class OrderViewState extends State<OrderView> {
                             child: Padding(
                           padding: EdgeInsets.only(top: 50),
                           child: Text(
-                            "Zamówienie jest puste.",
+                            AppLocalizations.instance.text('orderEmpty'),
                             style: TextStyle(color: Colors.grey),
                           ),
                         )),
@@ -75,27 +76,27 @@ class OrderViewState extends State<OrderView> {
               MenuiButton(
                 color: Colors.orange,
                 icon: Icons.home_rounded,
-                text: "Szukaj",
+                text: AppLocalizations.instance.text('search'),
                 onPressed: () => Navigator.push(context,
                     MaterialPageRoute(builder: (context) => HomePage())),
               ),
               MenuiButton(
                 color: Colors.orange,
                 icon: Icons.note_rounded,
-                text: "Zamównienie",
+                text: AppLocalizations.instance.text('order'),
                 onPressed: () {},
               ),
               MenuiButton(
                 color: Colors.orange,
                 icon: Icons.favorite_rounded,
-                text: "Ulubione",
+                text: AppLocalizations.instance.text('favorites'),
                 onPressed: () => Navigator.push(context,
                     MaterialPageRoute(builder: (context) => FavoritesView())),
               ),
               MenuiButton(
                 color: Colors.orange,
                 icon: Icons.settings,
-                text: "Ustawienia",
+                text: AppLocalizations.instance.text('settings'),
                 onPressed: () {
                   showSettings(context, widget.settings);
                 },
@@ -105,7 +106,7 @@ class OrderViewState extends State<OrderView> {
         ),
         appBar: AppBar(
           title: Text(
-            'Zamówienie',
+            AppLocalizations.instance.text('order'),
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
           ),
           backgroundColor: Colors.grey[900],
@@ -123,7 +124,7 @@ class OrderViewState extends State<OrderView> {
                 widget.settings.clearOrder();
                 setState(() {});
               },
-              text: "Wyczyść",
+              text: AppLocalizations.instance.text('clear'),
               icon: Icons.delete_forever_rounded,
             ),
           ],

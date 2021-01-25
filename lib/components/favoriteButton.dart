@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../settings.dart';
 import 'menuiButton.dart';
+import 'package:menui_mobile/localizations.dart';
 
 class FavoriteButton extends StatefulWidget {
   final String id;
@@ -33,7 +34,7 @@ class _FavoriteButtonState extends State<FavoriteButton> {
               return MenuiButton(
                 color: Colors.orange,
                 icon: Icons.favorite_rounded,
-                text: "Usuń",
+                text: AppLocalizations.instance.text("remove"),
                 onPressed: () {
                   settings.addToFavorites(widget.id);
                   setState(() {
@@ -45,7 +46,7 @@ class _FavoriteButtonState extends State<FavoriteButton> {
               return MenuiButton(
                 color: Colors.grey,
                 icon: Icons.favorite_rounded,
-                text: "Dodaj",
+                text: AppLocalizations.instance.text("add"),
                 onPressed: () {
                   settings.addToFavorites(widget.id);
                   setState(() {
@@ -58,7 +59,7 @@ class _FavoriteButtonState extends State<FavoriteButton> {
             return MenuiButton(
               color: Colors.grey,
               icon: Icons.favorite_rounded,
-              text: "Dodaj",
+              text: AppLocalizations.instance.text("add"),
               onPressed: () {},
             );
           }

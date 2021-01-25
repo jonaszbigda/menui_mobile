@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services.dart';
+import 'package:menui_mobile/localizations.dart';
 
 class Allergens extends StatelessWidget {
   final MenuiAllergens allergens;
@@ -32,7 +33,7 @@ class Allergens extends StatelessWidget {
                     height: 26,
                   ),
                   Text(
-                    'Jaja',
+                    AppLocalizations.instance.text('eggs'),
                     style:
                         TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
@@ -53,7 +54,7 @@ class Allergens extends StatelessWidget {
                     height: 26,
                   ),
                   Text(
-                    'Gluten',
+                    AppLocalizations.instance.text('gluten'),
                     style:
                         TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
@@ -74,7 +75,7 @@ class Allergens extends StatelessWidget {
                     height: 26,
                   ),
                   Text(
-                    'Laktoza',
+                    AppLocalizations.instance.text('lactose'),
                     style:
                         TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
@@ -95,7 +96,7 @@ class Allergens extends StatelessWidget {
                     height: 26,
                   ),
                   Text(
-                    'Orzechy',
+                    AppLocalizations.instance.text('peanuts'),
                     style:
                         TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
@@ -116,7 +117,7 @@ class Allergens extends StatelessWidget {
                     height: 26,
                   ),
                   Text(
-                    'Owoce morza',
+                    AppLocalizations.instance.text('seaFood'),
                     style:
                         TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
@@ -137,7 +138,7 @@ class Allergens extends StatelessWidget {
                     height: 26,
                   ),
                   Text(
-                    'Sezam',
+                    AppLocalizations.instance.text('sesame'),
                     style:
                         TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )
@@ -158,7 +159,7 @@ class Allergens extends StatelessWidget {
                     height: 26,
                   ),
                   Text(
-                    'Soja',
+                    AppLocalizations.instance.text('soy'),
                     style:
                         TextStyle(fontSize: fontSize, color: Colors.grey[300]),
                   )

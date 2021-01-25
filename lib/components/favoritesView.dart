@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:menui_mobile/components/restaurantCardAsync.dart';
+import 'package:menui_mobile/localizations.dart';
 import '../settings.dart';
 import 'homeScreen.dart';
 import 'orderView.dart';
@@ -28,7 +29,7 @@ class _FavoritesViewState extends State<FavoritesView> {
         body: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage("img/bg_tile.jpg"), fit: BoxFit.cover)),
+                    image: AssetImage("img/bg.png"), fit: BoxFit.cover)),
             child: FutureBuilder(
               future: favorites,
               builder: (context, snapshot) {
@@ -59,27 +60,27 @@ class _FavoritesViewState extends State<FavoritesView> {
               MenuiButton(
                 color: Colors.orange,
                 icon: Icons.home_rounded,
-                text: "Szukaj",
+                text: AppLocalizations.instance.text('search'),
                 onPressed: () => Navigator.push(context,
                     MaterialPageRoute(builder: (context) => HomePage())),
               ),
               MenuiButton(
                 color: Colors.orange,
                 icon: Icons.note_rounded,
-                text: "Zamównienie",
+                text: AppLocalizations.instance.text('order'),
                 onPressed: () => Navigator.push(context,
                     MaterialPageRoute(builder: (context) => OrderView())),
               ),
               MenuiButton(
                 color: Colors.orange,
                 icon: Icons.favorite_rounded,
-                text: "Ulubione",
+                text: AppLocalizations.instance.text('favorites'),
                 onPressed: () {},
               ),
               MenuiButton(
                 color: Colors.orange,
                 icon: Icons.settings,
-                text: "Ustawienia",
+                text: AppLocalizations.instance.text('settings'),
                 onPressed: () {
                   showSettings(context, settings);
                 },
@@ -89,7 +90,7 @@ class _FavoritesViewState extends State<FavoritesView> {
         ),
         appBar: AppBar(
           title: Text(
-            'Ulubione',
+            AppLocalizations.instance.text('favorites'),
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
           ),
           backgroundColor: Colors.grey[900],

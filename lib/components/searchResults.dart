@@ -8,6 +8,7 @@ import 'orderView.dart';
 import 'favoritesView.dart';
 import '../settings.dart';
 import 'filters.dart';
+import 'package:menui_mobile/localizations.dart';
 
 class SearchResults extends StatefulWidget {
   SearchResults(
@@ -67,7 +68,7 @@ class _SearchResultsState extends State<SearchResults>
       body: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("img/bg_tile.jpg"), fit: BoxFit.cover)),
+                image: AssetImage("img/bg.png"), fit: BoxFit.cover)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -138,28 +139,28 @@ class _SearchResultsState extends State<SearchResults>
             MenuiButton(
               color: Colors.orange,
               icon: Icons.home_rounded,
-              text: "Szukaj",
+              text: AppLocalizations.instance.text('search'),
               onPressed: () => Navigator.push(
                   context, MaterialPageRoute(builder: (context) => HomePage())),
             ),
             MenuiButton(
               color: Colors.orange,
               icon: Icons.note_rounded,
-              text: "Zamównienie",
+              text: AppLocalizations.instance.text('order'),
               onPressed: () => Navigator.push(context,
                   MaterialPageRoute(builder: (context) => OrderView())),
             ),
             MenuiButton(
               color: Colors.orange,
               icon: Icons.favorite_rounded,
-              text: "Ulubione",
+              text: AppLocalizations.instance.text('favorites'),
               onPressed: () => Navigator.push(context,
                   MaterialPageRoute(builder: (context) => FavoritesView())),
             ),
             MenuiButton(
               color: Colors.orange,
               icon: Icons.settings,
-              text: "Ustawienia",
+              text: AppLocalizations.instance.text('settings'),
               onPressed: () {
                 showSettings(context, widget.settings);
               },
@@ -169,7 +170,7 @@ class _SearchResultsState extends State<SearchResults>
       ),
       appBar: AppBar(
         title: Text(
-          'Znaleziono: ${filteredRestaurants.length}',
+          '${AppLocalizations.instance.text('foundCounter')} ${filteredRestaurants.length}',
           style: TextStyle(
               color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
         ),
@@ -185,7 +186,7 @@ class _SearchResultsState extends State<SearchResults>
           MenuiButton(
             color: Colors.grey,
             icon: Icons.filter_alt_rounded,
-            text: "Filtruj",
+            text: AppLocalizations.instance.text('filter'),
             onPressed: () {
               setState(() {
                 expand = !expand;

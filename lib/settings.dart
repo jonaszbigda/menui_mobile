@@ -1,26 +1,38 @@
 import 'dart:convert';
 
+import 'package:menui_mobile/localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 
 class MenuiSettings {
   // SET LANGUAGE
-  void setLanguage(String lang) async {
+  void setLanguage(String lang, BuildContext context) async {
     final settings = await SharedPreferences.getInstance();
     settings.setString('language', lang);
-    print('Language set to: $lang');
+    await AppLocalizations.instance.load(Locale(lang, ''));
+    String newLang = AppLocalizations.instance.getLocale();
+    AppBuilder.of(context).rebuild(lang);
   }
 
   // GET LANGUAGE
-  Future<String> getLanguage() async {
+  Future<String> getLanguage(BuildContext context) async {
     final settings = await SharedPreferences.getInstance();
     if (settings.containsKey('language')) {
       final String language = settings.getString('language');
       return language;
     } else {
-      settings.setString('language', 'pl');
+      setLanguage('pl', context);
       return 'pl';
+    }
+  }
+
+  // INIT LANGUAGE
+  void initLanguage(BuildContext context) async {
+    final String language = await getLanguage(context);
+    String currentLanguage = AppLocalizations.instance.getLocale();
+    if (currentLanguage != language) {
+      await setLanguage(language, context);
     }
   }
 
@@ -28,7 +40,6 @@ class MenuiSettings {
   void setRadius(int radiusMeters) async {
     final settings = await SharedPreferences.getInstance();
     settings.setInt('radius', radiusMeters);
-    print('Radius set to: $radiusMeters');
   }
 
   // GET RADIUS
@@ -47,7 +58,6 @@ class MenuiSettings {
   void setRecommendations(bool recommend) async {
     final settings = await SharedPreferences.getInstance();
     settings.setBool('recommendations', recommend);
-    print('Recommendations set to: $recommend');
   }
 
   // GET RECOMMENDATIONS
@@ -67,13 +77,13 @@ class MenuiSettings {
     String language;
     switch (languageCode) {
       case 'pl':
-        language = 'Polski';
+        language = AppLocalizations.instance.text("pl");
         break;
       case 'en':
-        language = 'English';
+        language = AppLocalizations.instance.text("en");
         break;
       case 'de':
-        language = 'Deutsch';
+        language = AppLocalizations.instance.text("de");
         break;
     }
     return language;
@@ -82,9 +92,9 @@ class MenuiSettings {
   // DECODE BOOL
   String decodeBool(bool value) {
     if (value == true) {
-      return "Tak";
+      return AppLocalizations.instance.text("yes");
     } else {
-      return "Nie";
+      return AppLocalizations.instance.text("no");
     }
   }
 
@@ -180,7 +190,6 @@ class MenuiSettings {
       final List<String> result = settings.getStringList('favorites');
       return result;
     } else {
-      print('Favorites Empty');
       return [];
     }
   }
@@ -201,9 +210,41 @@ class MenuiSettings {
   }
 }
 
+class AppBuilder extends StatefulWidget {
+  final Function(BuildContext) builder;
+
+  const AppBuilder({Key key, this.builder}) : super(key: key);
+
+  @override
+  AppBuilderState createState() => new AppBuilderState();
+
+  static AppBuilderState of(BuildContext context) {
+    return context.findAncestorStateOfType<AppBuilderState>();
+  }
+}
+
+class AppBuilderState extends State<AppBuilder> {
+  String languageCode;
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.builder(context);
+  }
+
+  void rebuild(String language) {
+    print('REBUILDING...');
+    if (languageCode == null || languageCode != language) {
+      print('languageCode: $languageCode /// newLanguage: $language');
+      setState(() {
+        languageCode = language;
+      });
+    }
+  }
+}
+
 void showSettings(BuildContext context, MenuiSettings settings) async {
   FocusManager.instance.primaryFocus.unfocus();
-  final String languageCode = await settings.getLanguage();
+  final String languageCode = await settings.getLanguage(context);
   final String language = settings.decodeLanguage(languageCode);
   final int radius = await settings.getRadius();
   final bool recommendationsValue = await settings.getRecommendations();
@@ -222,7 +263,7 @@ void showSettings(BuildContext context, MenuiSettings settings) async {
           children: <Widget>[
             ListTile(
                 title: Text(
-                  'Język',
+                  AppLocalizations.instance.text("language"),
                   style: TextStyle(color: Colors.white),
                 ),
                 subtitle: Text(
@@ -239,7 +280,7 @@ void showSettings(BuildContext context, MenuiSettings settings) async {
                 }),
             ListTile(
                 title: Text(
-                  'Promień lokalizacji',
+                  AppLocalizations.instance.text("localizationRadius"),
                   style: TextStyle(color: Colors.white),
                 ),
                 subtitle:
@@ -254,7 +295,7 @@ void showSettings(BuildContext context, MenuiSettings settings) async {
                 }),
             ListTile(
                 title: Text(
-                  'Proponuj restauracje',
+                  AppLocalizations.instance.text("suggest"),
                   style: TextStyle(color: Colors.white),
                 ),
                 subtitle:
@@ -269,7 +310,7 @@ void showSettings(BuildContext context, MenuiSettings settings) async {
                 }),
             ListTile(
                 title: Text(
-                  'O aplikacji',
+                  AppLocalizations.instance.text("aboutApp"),
                   style: TextStyle(color: Colors.white),
                 ),
                 leading: Icon(
@@ -287,13 +328,13 @@ void showSettings(BuildContext context, MenuiSettings settings) async {
 
 void showLanguageSelectionDialog(
     BuildContext context, MenuiSettings settings) async {
-  final currentLanguage = await settings.getLanguage();
+  final currentLanguage = await settings.getLanguage(context);
   showDialog(
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
           title: Text(
-            'Język',
+            AppLocalizations.instance.text("language"),
             style: TextStyle(color: Colors.white, fontSize: 16),
             textAlign: TextAlign.center,
           ),
@@ -303,33 +344,33 @@ void showLanguageSelectionDialog(
           children: <Widget>[
             SimpleDialogOption(
               onPressed: () {
-                settings.setLanguage('pl');
+                settings.setLanguage('pl', context);
                 Navigator.pop(context);
               },
               child: Text(
-                'Polski',
+                AppLocalizations.instance.text("pl"),
                 style: TextStyle(color: getOptionColor(currentLanguage, 'pl')),
                 textAlign: TextAlign.center,
               ),
             ),
             SimpleDialogOption(
               onPressed: () {
-                settings.setLanguage('en');
+                settings.setLanguage('en', context);
                 Navigator.pop(context);
               },
               child: Text(
-                'English',
+                AppLocalizations.instance.text("en"),
                 style: TextStyle(color: getOptionColor(currentLanguage, 'en')),
                 textAlign: TextAlign.center,
               ),
             ),
             SimpleDialogOption(
               onPressed: () {
-                settings.setLanguage('de');
+                settings.setLanguage('de', context);
                 Navigator.pop(context);
               },
               child: Text(
-                'Deutsch',
+                AppLocalizations.instance.text("de"),
                 style: TextStyle(color: getOptionColor(currentLanguage, 'de')),
                 textAlign: TextAlign.center,
               ),
@@ -349,7 +390,7 @@ void showRecommendationsDialog(
       builder: (BuildContext context) {
         return SimpleDialog(
           title: Text(
-            'Polecaj restauracje w okolicy',
+            AppLocalizations.instance.text("suggest"),
             style: TextStyle(color: Colors.white, fontSize: 16),
             textAlign: TextAlign.center,
           ),
@@ -363,7 +404,7 @@ void showRecommendationsDialog(
                 Navigator.pop(context);
               },
               child: Text(
-                'Tak',
+                AppLocalizations.instance.text("yes"),
                 style:
                     TextStyle(color: getOptionColor(showRecommendations, true)),
                 textAlign: TextAlign.center,
@@ -375,7 +416,7 @@ void showRecommendationsDialog(
                 Navigator.pop(context);
               },
               child: Text(
-                'Nie',
+                AppLocalizations.instance.text("no"),
                 style: TextStyle(
                     color: getOptionColor(showRecommendations, false)),
                 textAlign: TextAlign.center,
@@ -402,7 +443,7 @@ void showAppInfoDialog(BuildContext context) async {
             children: <Widget>[
               ListTile(
                   title: Text(
-                    'Wersja aplikacji',
+                    AppLocalizations.instance.text("appVersion"),
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white),
                   ),
@@ -413,7 +454,7 @@ void showAppInfoDialog(BuildContext context) async {
                   )),
               ListTile(
                   title: Text(
-                    'Wsparcie',
+                    AppLocalizations.instance.text("support"),
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white),
                   ),
@@ -469,7 +510,7 @@ class _RadiusSliderState extends State<RadiusSlider> {
   Widget build(BuildContext context) {
     return SimpleDialog(
       title: Text(
-        'Promień lokalizacji',
+        AppLocalizations.instance.text("localizationRadius"),
         style: TextStyle(color: Colors.white, fontSize: 16),
         textAlign: TextAlign.center,
       ),
@@ -496,8 +537,8 @@ class _RadiusSliderState extends State<RadiusSlider> {
             }
             Navigator.pop(context);
           },
-          child: const Text(
-            'Zapisz',
+          child: Text(
+            AppLocalizations.instance.text("save"),
             style: TextStyle(color: Colors.white),
             textAlign: TextAlign.center,
           ),

@@ -6,6 +6,7 @@ import 'orderView.dart';
 import 'favoritesView.dart';
 import 'homeScreen.dart';
 import 'menuiButton.dart';
+import 'package:menui_mobile/localizations.dart';
 
 class RestaurantMapView extends StatefulWidget {
   final List coordinates;
@@ -35,7 +36,9 @@ class RestaurantMapViewState extends State<RestaurantMapView> {
         markerId: markerId,
         position: LatLng(widget.coordinates[0], widget.coordinates[1]),
         infoWindow: InfoWindow(
-            title: '${widget.name}', snippet: 'Kuchnia: ${widget.type}'));
+            title: '${widget.name}',
+            snippet:
+                '${AppLocalizations.instance.text('type')} ${widget.type}'));
     setState(() {
       markers[MarkerId("restaurant-marker")] = marker;
     });
@@ -58,28 +61,28 @@ class RestaurantMapViewState extends State<RestaurantMapView> {
             MenuiButton(
               color: Colors.orange,
               icon: Icons.home_rounded,
-              text: "Szukaj",
+              text: AppLocalizations.instance.text('search'),
               onPressed: () => Navigator.push(
                   context, MaterialPageRoute(builder: (context) => HomePage())),
             ),
             MenuiButton(
               color: Colors.orange,
               icon: Icons.note_rounded,
-              text: "Zamównienie",
+              text: AppLocalizations.instance.text('order'),
               onPressed: () => Navigator.push(context,
                   MaterialPageRoute(builder: (context) => OrderView())),
             ),
             MenuiButton(
               color: Colors.orange,
               icon: Icons.favorite_rounded,
-              text: "Ulubione",
+              text: AppLocalizations.instance.text('favorites'),
               onPressed: () => Navigator.push(context,
                   MaterialPageRoute(builder: (context) => FavoritesView())),
             ),
             MenuiButton(
               color: Colors.orange,
               icon: Icons.settings,
-              text: "Ustawienia",
+              text: AppLocalizations.instance.text('settings'),
               onPressed: () {
                 showSettings(context, settings);
               },

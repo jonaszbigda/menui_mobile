@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:menui_mobile/localizations.dart';
 import 'searchBar.dart';
 import '../settings.dart';
 import 'mapView.dart';
@@ -11,11 +12,12 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    settings.initLanguage(context);
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("img/bg_tile.jpg"), fit: BoxFit.cover)),
+                image: AssetImage("img/bg.png"), fit: BoxFit.cover)),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -26,7 +28,7 @@ class HomePage extends StatelessWidget {
               ),
               MenuiSearchBar(''),
               Text(
-                'lub',
+                AppLocalizations.instance.text('or'),
                 style: TextStyle(color: Colors.grey[500]),
               ),
               RaisedButton.icon(
@@ -38,7 +40,7 @@ class HomePage extends StatelessWidget {
                   color: Colors.orange,
                 ),
                 label: Text(
-                  'Pokaż w pobliżu',
+                  AppLocalizations.instance.text('geosearch'),
                   style: TextStyle(color: Colors.grey[300]),
                 ),
                 shape: RoundedRectangleBorder(
@@ -57,27 +59,27 @@ class HomePage extends StatelessWidget {
             MenuiButton(
               color: Colors.orange,
               icon: Icons.home_rounded,
-              text: "Szukaj",
+              text: AppLocalizations.instance.text('search'),
               onPressed: () {},
             ),
             MenuiButton(
               color: Colors.orange,
               icon: Icons.note_rounded,
-              text: "Zamównienie",
+              text: AppLocalizations.instance.text('order'),
               onPressed: () => Navigator.push(context,
                   MaterialPageRoute(builder: (context) => OrderView())),
             ),
             MenuiButton(
               color: Colors.orange,
               icon: Icons.favorite_rounded,
-              text: "Ulubione",
+              text: AppLocalizations.instance.text('favorites'),
               onPressed: () => Navigator.push(context,
                   MaterialPageRoute(builder: (context) => FavoritesView())),
             ),
             MenuiButton(
               color: Colors.orange,
               icon: Icons.settings,
-              text: "Ustawienia",
+              text: AppLocalizations.instance.text('settings'),
               onPressed: () {
                 showSettings(context, settings);
               },

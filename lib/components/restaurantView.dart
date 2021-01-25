@@ -11,6 +11,7 @@ import 'homeScreen.dart';
 import 'package:share/share.dart';
 import 'favoriteButton.dart';
 import 'menuiButton.dart';
+import 'package:menui_mobile/localizations.dart';
 
 class RestaurantView extends StatefulWidget {
   final String id;
@@ -118,7 +119,7 @@ class _RestaurantViewState extends State<RestaurantView> {
                                 height: 8,
                               ),
                               Text(
-                                'Informacje',
+                                AppLocalizations.instance.text('info'),
                                 style: TextStyle(
                                     color: Colors.orange, fontSize: 14),
                               ),
@@ -126,23 +127,26 @@ class _RestaurantViewState extends State<RestaurantView> {
                                 height: 6,
                               ),
                               MenuiDoubleColorText(
-                                leading: 'Kuchnia: ',
+                                leading:
+                                    '${AppLocalizations.instance.text('type')} ',
                                 following: '${restaurant.type}',
                               ),
                               MenuiDoubleColorText(
-                                leading: 'Adres: ',
+                                leading:
+                                    '${AppLocalizations.instance.text('adress')} ',
                                 following:
                                     '${restaurant.city}, ${restaurant.adress}',
                               ),
                               MenuiDoubleColorText(
-                                leading: 'Kontakt: ',
+                                leading:
+                                    '${AppLocalizations.instance.text('contact')} ',
                                 following: '${restaurant.phone}',
                               ),
                               SizedBox(
                                 height: 12,
                               ),
                               Text(
-                                'Godziny otwarcia',
+                                AppLocalizations.instance.text('hours'),
                                 style: TextStyle(
                                     color: Colors.orange, fontSize: 14),
                               ),
@@ -155,7 +159,7 @@ class _RestaurantViewState extends State<RestaurantView> {
                                 height: 12,
                               ),
                               Text(
-                                'Social media',
+                                AppLocalizations.instance.text('social'),
                                 style: TextStyle(
                                     color: Colors.orange, fontSize: 14),
                               ),
@@ -170,7 +174,7 @@ class _RestaurantViewState extends State<RestaurantView> {
                           ),
                         ),
                         SizedBox(
-                          height: 80,
+                          height: 120,
                         )
                       ],
                     )
@@ -192,14 +196,14 @@ class _RestaurantViewState extends State<RestaurantView> {
                           elevation: 5,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(25)),
-                          color: Colors.grey[900],
+                          color: Colors.orange,
                           icon: Icon(
                             Icons.keyboard_arrow_up_rounded,
-                            color: Colors.orange,
+                            color: Colors.grey[900],
                           ),
                           label: Text(
-                            "Karta dań",
-                            style: TextStyle(color: Colors.white),
+                            AppLocalizations.instance.text('showDishes'),
+                            style: TextStyle(color: Colors.grey[900]),
                           ),
                           onPressed: () =>
                               showMenu(context, restaurant.categories),
@@ -215,7 +219,7 @@ class _RestaurantViewState extends State<RestaurantView> {
                         MenuiButton(
                           color: Colors.orange,
                           icon: Icons.home_rounded,
-                          text: "Szukaj",
+                          text: AppLocalizations.instance.text('search'),
                           onPressed: () => Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -224,7 +228,7 @@ class _RestaurantViewState extends State<RestaurantView> {
                         MenuiButton(
                           color: Colors.orange,
                           icon: Icons.note_rounded,
-                          text: "Zamównienie",
+                          text: AppLocalizations.instance.text('order'),
                           onPressed: () => Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -233,7 +237,7 @@ class _RestaurantViewState extends State<RestaurantView> {
                         MenuiButton(
                           color: Colors.orange,
                           icon: Icons.favorite_rounded,
-                          text: "Ulubione",
+                          text: AppLocalizations.instance.text('favorites'),
                           onPressed: () => Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -242,7 +246,7 @@ class _RestaurantViewState extends State<RestaurantView> {
                         MenuiButton(
                           color: Colors.orange,
                           icon: Icons.settings,
-                          text: "Ustawienia",
+                          text: AppLocalizations.instance.text('settings'),
                           onPressed: () {
                             showSettings(context, settings);
                           },
@@ -265,7 +269,7 @@ class _RestaurantViewState extends State<RestaurantView> {
                   MenuiButton(
                     color: Colors.grey,
                     icon: Icons.map_rounded,
-                    text: "Mapa",
+                    text: AppLocalizations.instance.text('map'),
                     onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -278,7 +282,7 @@ class _RestaurantViewState extends State<RestaurantView> {
                   MenuiButton(
                     color: Colors.grey,
                     icon: Icons.share_rounded,
-                    text: "Udostępnij",
+                    text: AppLocalizations.instance.text('share'),
                     onPressed: () => Share.share(
                         'https://www.menui.pl/restaurant/${restaurant.id}',
                         subject: '${restaurant.name}'),
@@ -350,7 +354,7 @@ class WorkingHoursDay extends StatelessWidget {
 
   String formatTodayHours(String hours) {
     if (hours == "") {
-      return 'nieczynne';
+      return AppLocalizations.instance.text('closed');
     } else {
       return hours;
     }
@@ -412,13 +416,20 @@ class WorkingHoursList extends StatelessWidget {
       runSpacing: 8.0,
       alignment: WrapAlignment.center,
       children: <Widget>[
-        WorkingHoursDay('Pn', workingHours.pn, 1),
-        WorkingHoursDay('Wt', workingHours.wt, 2),
-        WorkingHoursDay('Śr', workingHours.sr, 3),
-        WorkingHoursDay('Cz', workingHours.cz, 4),
-        WorkingHoursDay('Pt', workingHours.pt, 5),
-        WorkingHoursDay('So', workingHours.sb, 6),
-        WorkingHoursDay('Nd', workingHours.nd, 7),
+        WorkingHoursDay(
+            AppLocalizations.instance.text('mo'), workingHours.pn, 1),
+        WorkingHoursDay(
+            AppLocalizations.instance.text('tu'), workingHours.wt, 2),
+        WorkingHoursDay(
+            AppLocalizations.instance.text('we'), workingHours.sr, 3),
+        WorkingHoursDay(
+            AppLocalizations.instance.text('th'), workingHours.cz, 4),
+        WorkingHoursDay(
+            AppLocalizations.instance.text('fr'), workingHours.pt, 5),
+        WorkingHoursDay(
+            AppLocalizations.instance.text('sa'), workingHours.sb, 6),
+        WorkingHoursDay(
+            AppLocalizations.instance.text('su'), workingHours.nd, 7),
       ],
     );
   }

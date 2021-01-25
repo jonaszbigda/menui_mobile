@@ -9,6 +9,7 @@ import 'restaurantView.dart';
 import 'menuiButton.dart';
 import 'orderView.dart';
 import 'favoritesView.dart';
+import 'package:menui_mobile/localizations.dart';
 
 class MapView extends StatefulWidget {
   @override
@@ -78,7 +79,8 @@ class MapViewState extends State<MapView> with SingleTickerProviderStateMixin {
                         builder: (context) =>
                             RestaurantView(id: thisRestaurant.id))),
                 title: '${thisRestaurant.name}',
-                snippet: 'Kuchnia: ${thisRestaurant.type}'));
+                snippet:
+                    '${AppLocalizations.instance.text('type')} ${thisRestaurant.type}'));
         markers[markerId] = marker;
       }
     }
@@ -157,7 +159,7 @@ class MapViewState extends State<MapView> with SingleTickerProviderStateMixin {
                                     color: Colors.orange,
                                   ),
                                   Text(
-                                    'Promień',
+                                    AppLocalizations.instance.text("radius"),
                                     style: TextStyle(
                                         color: Colors.grey[200],
                                         fontSize: 11,
@@ -198,7 +200,7 @@ class MapViewState extends State<MapView> with SingleTickerProviderStateMixin {
                                     color: Colors.orange,
                                   ),
                                   Text(
-                                    'Filtry',
+                                    AppLocalizations.instance.text("filter"),
                                     style: TextStyle(
                                         color: Colors.grey[200],
                                         fontSize: 11,
@@ -254,7 +256,7 @@ class MapViewState extends State<MapView> with SingleTickerProviderStateMixin {
                               color: Colors.orange,
                             ),
                             Text(
-                              'Znaleziono: ${data.markers.length}',
+                              '${AppLocalizations.instance.text('foundCounter')} ${data.markers.length}',
                               style:
                                   TextStyle(color: Colors.white, fontSize: 12),
                             ),
@@ -282,13 +284,13 @@ class MapViewState extends State<MapView> with SingleTickerProviderStateMixin {
                       MenuiButton(
                         color: Colors.orange,
                         icon: Icons.home_rounded,
-                        text: "Szukaj",
+                        text: AppLocalizations.instance.text("search"),
                         onPressed: () => Navigator.pop(context),
                       ),
                       MenuiButton(
                         color: Colors.orange,
                         icon: Icons.note_rounded,
-                        text: "Zamównienie",
+                        text: AppLocalizations.instance.text("order"),
                         onPressed: () => Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -297,7 +299,7 @@ class MapViewState extends State<MapView> with SingleTickerProviderStateMixin {
                       MenuiButton(
                         color: Colors.orange,
                         icon: Icons.favorite_rounded,
-                        text: "Ulubione",
+                        text: AppLocalizations.instance.text("favorites"),
                         onPressed: () => Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -306,7 +308,7 @@ class MapViewState extends State<MapView> with SingleTickerProviderStateMixin {
                       MenuiButton(
                         color: Colors.orange,
                         icon: Icons.settings,
-                        text: "Ustawienia",
+                        text: AppLocalizations.instance.text("settings"),
                         onPressed: () {
                           showSettings(context, settings);
                         },
@@ -321,7 +323,7 @@ class MapViewState extends State<MapView> with SingleTickerProviderStateMixin {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [Text("Błąd...")],
+                children: [Text(AppLocalizations.instance.text("error"))],
               ),
             );
           } else {
@@ -342,7 +344,7 @@ class MapViewState extends State<MapView> with SingleTickerProviderStateMixin {
                       Padding(
                         padding: EdgeInsets.only(top: 16),
                         child: Text(
-                          'Szukam restauracji...',
+                          AppLocalizations.instance.text("searching"),
                           style: TextStyle(color: Colors.grey[200]),
                         ),
                       )
